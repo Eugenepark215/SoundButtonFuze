@@ -1,0 +1,30 @@
+.cyan-background {
+  background-color: rgb(110 223 246);
+}
+
+.white {
+  color: white;
+}
+
+i {
+  font-size: x-large;
+}
+
+.lucida-sans {
+  font-family:
+    "Lucida Sans",
+    "Lucida Sans Regular",
+    "Lucida Grande",
+    "Lucida Sans Unicode",
+    Geneva,
+    Verdana,
+    sans-serif;
+}
+
+.font-gray {
+  color: gray;
+}
+
+.drop-shadow {
+  filter: drop-shadow(0 0 10px lightgray);
+}

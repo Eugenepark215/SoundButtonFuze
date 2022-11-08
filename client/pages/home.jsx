@@ -1,10 +1,16 @@
 import React from 'react';
-import HelloWorld from '../components/hello-world';
+import SoundButtons from '../components/sound-buttons';
+import NavBar from '../components/nav-bar';
 
 export default function Home(props) {
   return (
     <div>
-      <HelloWorld />
+      <div>
+        <NavBar />
+      </div>
+      <div>
+        <SoundButtons />
+      </div>
     </div>
   );
 }
