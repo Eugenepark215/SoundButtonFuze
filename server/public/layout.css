@@ -27,7 +27,7 @@
 } */
 
 .align-center {
-  align-self: center;
+  align-items: center;
 }
 
 .justify-content-center {
@@ -44,4 +44,20 @@
 
 .column-half {
   flex-basis: calc(100%/2);
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.margin-top {
+  margin-top: 10%;
 }

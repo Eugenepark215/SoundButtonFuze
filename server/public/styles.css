@@ -28,3 +28,52 @@ i {
 .drop-shadow {
   filter: drop-shadow(0 0 10px lightgray);
 }
+
+button {
+  width: 70px;
+  height: 70px;
+}
+
+.border-radius {
+  border-radius: 50%;
+}
+
+.border-none {
+  border: none;
+}
+
+a {
+  font-size: smaller;
+}
+
+.red-background {
+  background-color: red;
+}
+
+.blue-background {
+  background-color: blue;
+}
+
+.purple-background {
+  background-color: purple;
+}
+
+.green-background {
+  background-color: green;
+}
+
+.yellow-background {
+  background-color: yellow;
+}
+
+.orange-background {
+  background-color: orange;
+}
+
+.pink-background {
+  background-color: pink;
+}
+
+.black-background {
+  background-color: black;
+}
