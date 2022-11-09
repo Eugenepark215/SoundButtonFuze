@@ -1,0 +1,104 @@
+.cyan-background {
+  background-color: rgb(110 223 246);
+}
+
+.white {
+  color: white;
+}
+
+i {
+  font-size: x-large;
+}
+
+.lucida-sans {
+  font-family:
+    "Lucida Sans",
+    "Lucida Sans Regular",
+    "Lucida Grande",
+    "Lucida Sans Unicode",
+    Geneva,
+    Verdana,
+    sans-serif;
+}
+
+.font-gray {
+  color: gray;
+}
+
+.drop-shadow {
+  filter: drop-shadow(0 0 10px lightgray);
+}
+
+.w-h70px {
+  width: 70px;
+  height: 70px;
+}
+
+.w-h175px {
+  width: 175px;
+  height: 175px;
+}
+
+.w200px-h40px {
+  width: 200px;
+  height: 40px;
+}
+
+.border-radius-50 {
+  border-radius: 50%;
+}
+
+.border-none {
+  border: none;
+}
+
+a {
+  font-size: smaller;
+}
+
+.red-background {
+  background-color: red;
+}
+
+.blue-background {
+  background-color: blue;
+}
+
+.purple-background {
+  background-color: purple;
+}
+
+.green-background {
+  background-color: green;
+}
+
+.yellow-background {
+  background-color: yellow;
+}
+
+.orange-background {
+  background-color: orange;
+}
+
+.pink-background {
+  background-color: pink;
+}
+
+.black-background {
+  background-color: black;
+}
+
+@media screen and (min-width: 750px) {
+  h2 {
+    font-size: xx-large;
+  }
+
+  i {
+    font-size: xx-large;
+    text-align: right;
+  }
+
+  a {
+    font-size: large;
+  }
+}
