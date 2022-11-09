@@ -29,12 +29,22 @@ i {
   filter: drop-shadow(0 0 10px lightgray);
 }
 
-button {
+.w-h70px {
   width: 70px;
   height: 70px;
 }
 
-.border-radius {
+.w-h175px {
+  width: 175px;
+  height: 175px;
+}
+
+.w200px-h40px {
+  width: 200px;
+  height: 40px;
+}
+
+.border-radius-50 {
   border-radius: 50%;
 }
 
