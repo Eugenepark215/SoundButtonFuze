@@ -1,5 +1,5 @@
 import React from 'react';
-import SoundButtons from '../components/sound-buttons';
+import SoundButtonsHeader from '../components/sound-buttons-header';
 import NavBar from '../components/nav-bar';
 
 export default function Home(props) {
@@ -9,7 +9,7 @@ export default function Home(props) {
         <NavBar />
       </div>
       <div>
-        <SoundButtons />
+        <SoundButtonsHeader />
       </div>
     </div>
   );

@@ -87,3 +87,18 @@ a {
 .black-background {
   background-color: black;
 }
+
+@media screen and (min-width: 750px) {
+  h2 {
+    font-size: xx-large;
+  }
+
+  i {
+    font-size: xx-large;
+    text-align: right;
+  }
+
+  a {
+    font-size: large;
+  }
+}

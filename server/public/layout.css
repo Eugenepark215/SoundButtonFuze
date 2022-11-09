@@ -61,3 +61,38 @@
 .margin-top {
   margin-top: 10%;
 }
+
+@media screen and (min-width: 750px) {
+  #sound-button {
+    width: 100px;
+    height: 100px;
+  }
+
+  #nav-bar-header {
+    text-align: left;
+  }
+
+  #icon-container {
+    flex-basis: calc(100%/3);
+    margin-left: 20%;
+  }
+
+  #button-column {
+    margin-top: 5%;
+  }
+
+  #sound-button-header {
+    margin-top: 5%;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  #button-column {
+    flex-basis: calc(100%/5);
+  }
+
+  #button-container {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+}

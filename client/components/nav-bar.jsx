@@ -5,9 +5,9 @@ export default function NavBar(props) {
     <div className="container drop-shadow">
       <div className="row cyan-background">
         <div className="column-half padding-left">
-          <h2 className='white lucida-sans text-align-center'>SoundButtonFuze</h2>
+          <h2 id='nav-bar-header'className='white lucida-sans text-align-center'>SoundButtonFuze</h2>
         </div>
-        <div className="column-half row align-center justify-content-center padding-left padding-right">
+        <div id='icon-container' className="column-half row align-center justify-content-center padding-left padding-right">
           <div className="column-third text-align-center">
             <i className="fa-solid fa-house white" />
           </div>
