@@ -21,6 +21,7 @@ create table "public"."users" (
 	"soundId" serial NOT NULL,
 	"userId" int NOT NULL,
 	"fileUrl" TEXT NOT NULL,
+  "soundName" TEXT NOT NULL,
 	"uploadedAt" TIMESTAMP NOT NULL,
 	CONSTRAINT "sounds_pk" PRIMARY KEY ("soundId")
 ) WITH (

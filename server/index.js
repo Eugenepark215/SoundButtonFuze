@@ -9,7 +9,7 @@ const app = express();
 app.use(staticMiddleware);
 
 const db = new pg.Pool({
-  connectionString: 'postgres://dev:dev@localhost/soundDataBase',
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
@@ -17,8 +17,9 @@ const db = new pg.Pool({
 
 app.get('/api/sounds', (req, res, next) => {
   const sql = `
-  select "fileUrl",
-  "soundId"
+  select "soundName",
+  "soundId",
+  "fileUrl"
   from "sounds"
   `;
   db.query(sql)
