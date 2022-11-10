@@ -1,5 +1,7 @@
 import React from 'react';
 import Home from './pages/home';
+import ParseRoute from './lib/parse-route';
+import SoundButtonDetail from './pages/sound-button-detail';
 const colors = [
   'red-background',
   'blue-background',
@@ -14,7 +16,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: []
+      sounds: [],
+      route: ParseRoute(window.location.hash)
     };
   }
 
@@ -24,25 +27,26 @@ export default class App extends React.Component {
       .then(sound => {
         this.setState({ sounds: sound });
       });
+    window.addEventListener('hashchange', () => {
+      this.setState({ route: ParseRoute(window.location.hash) });
+    });
+  }
+
+  renderPage() {
+    const { route } = this.state;
+    if (route.path === '') {
+      return <Home colors = {colors} />;
+    }
+    if (route.path === 'sound') {
+      const soundId = route.params.get('soundId');
+      return <SoundButtonDetail colors = {colors} soundId = {soundId}/>;
+    }
   }
 
   render() {
     return (
       <div>
-        <Home />
-        <div id='button-container' className='display-flex flex-wrap'>
-          {this.state.sounds.map((sound, index) => {
-            const color = colors[index % colors.length];
-            return (
-              <div id='button-column' className='column-third margin-top' key={sound.soundId}>
-                <div className='display-flex align-center justify-content-center flex-direction-column'>
-                  <button id='sound-button' className={`w-h70px drop-shadow border-radius-50 border-none justify-item-center ${color}`}/>
-                  <a className='font-gray lucida-sans text-align-center margin-top' onClick={this.handleClick}>{sound.soundName}</a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {this.renderPage()}
       </div>
     );
   }
