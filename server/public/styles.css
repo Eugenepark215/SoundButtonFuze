@@ -6,6 +6,10 @@
   color: white;
 }
 
+.text-decoration-none {
+  text-decoration: none;
+}
+
 i {
   font-size: x-large;
 }
