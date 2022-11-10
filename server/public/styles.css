@@ -88,6 +88,14 @@ a {
   background-color: black;
 }
 
+.border-radius-5px {
+  border-radius: 5px;
+}
+
+#add-to-bookmarks {
+  font-size: larger;
+}
+
 @media screen and (min-width: 750px) {
   h2 {
     font-size: xx-large;
@@ -100,5 +108,10 @@ a {
 
   a {
     font-size: large;
+  }
+
+  #sound-button {
+    width: 100px;
+    height: 100px;
   }
 }

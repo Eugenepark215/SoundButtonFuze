@@ -29,6 +29,22 @@ app.get('/api/sounds', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/sounds/:soundId', (req, res, next) => {
+  const soundId = Number(req.params.soundId);
+  const sql = `
+  select "soundId",
+          "soundName"
+  from "sounds"
+  where "soundId" = $1
+  `;
+  const params = [soundId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
