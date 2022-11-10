@@ -1,11 +1,10 @@
 import React from 'react';
 import NavBar from '../components/nav-bar';
 
-export default class Hi extends React.Component {
+export default class SoundButtonDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: [],
       current: null
     };
   }
@@ -27,10 +26,10 @@ export default class Hi extends React.Component {
           <NavBar />
         </div>
         <div className='flex-direction-column'>
-          <h2 id='single-button-header' className='margin-top lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
+          <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
-            <button id='single-button' className={`drop-shadow margin-top w-h175px border-radius-50 border-none ${color}`} />
-            <button id='add-to-bookmarks' className='drop-shadow margin-top border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
+            <button className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
+            <button className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
       </div>

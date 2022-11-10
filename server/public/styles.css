@@ -96,8 +96,13 @@ a {
   border-radius: 5px;
 }
 
-#add-to-bookmarks {
+.add-to-bookmarks {
   font-size: larger;
+}
+
+.sound-button {
+  width: 70px;
+  height: 70px;
 }
 
 @media screen and (min-width: 750px) {
@@ -114,7 +119,7 @@ a {
     font-size: large;
   }
 
-  #sound-button {
+  .sound-button {
     width: 100px;
     height: 100px;
   }
