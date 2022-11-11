@@ -2,6 +2,8 @@ import React from 'react';
 import Home from './pages/home';
 import ParseRoute from './lib/parse-route';
 import SoundButtonDetail from './pages/sound-button-detail';
+import Recording from './pages/record';
+
 const colors = [
   'red-background',
   'blue-background',
@@ -40,6 +42,9 @@ export default class App extends React.Component {
     if (route.path === 'sound') {
       const soundId = route.params.get('soundId');
       return <SoundButtonDetail colors = {colors} soundId = {soundId}/>;
+    }
+    if (route.path === 'record') {
+      return <Recording />;
     }
   }
 
