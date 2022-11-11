@@ -51,6 +51,10 @@
   margin-top: 4rem;
 }
 
+.record-header {
+  margin-top: 4rem;
+}
+
 .add-to-bookmarks {
   margin-top: 3rem;
 }
@@ -106,6 +110,10 @@
     margin-top: 2rem;
   }
 
+  .record-header {
+    margin-top: 2rem;
+  }
+
   .add-to-bookmarks {
     margin-top: 5rem;
     width: 200px;
@@ -143,5 +151,9 @@
 
   .add-to-bookmarks {
     width: 250px;
+  }
+
+  .record-header {
+    margin-top: 5rem;
   }
 }

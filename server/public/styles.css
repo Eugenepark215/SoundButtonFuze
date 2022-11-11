@@ -6,6 +6,10 @@
   color: white;
 }
 
+.red {
+  color: red;
+}
+
 .text-decoration-none {
   text-decoration: none;
 }
@@ -105,7 +109,23 @@ a {
   height: 70px;
 }
 
+.audio-player {
+  width: 200px;
+}
+
+.audio-player-column {
+  margin-top: 4rem;
+}
+
+.icon-recording {
+  font-size: 50px;
+}
+
 @media screen and (min-width: 750px) {
+  .audio-player {
+    width: 300px;
+  }
+
   h2 {
     font-size: xx-large;
   }
@@ -122,5 +142,15 @@ a {
   .sound-button {
     width: 100px;
     height: 100px;
+  }
+
+  .icon-recording {
+    font-size: 80px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .audio-player {
+    width: 500px;
   }
 }

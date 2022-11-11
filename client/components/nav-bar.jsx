@@ -16,7 +16,9 @@ export default function NavBar(props) {
             </a>
           </div>
           <div className="column-third text-align-center">
-            <i className="fa-solid fa-microphone white" />
+            <a href='#record'>
+              <i className="fa-solid fa-microphone white" />
+            </a>
           </div>
           <div className="column-third text-align-center">
             <i className="fa-solid fa-bookmark white" />
