@@ -4,9 +4,10 @@ const express = require('express');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const ClientError = require('./client-error');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const app = express();
-
+app.use(express.json());
 app.use(staticMiddleware);
 
 const db = new pg.Pool({
@@ -48,6 +49,24 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
         throw new ClientError(404, `cannot find sound with soundId ${soundId}`);
       }
       res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
+  const { fileUrl } = req.body;
+  if (!fileUrl) {
+    throw new ClientError(400, 'file name must be a string');
+  }
+  const sql = `
+  insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
+  values ($1, 'hi', 1, now())
+  returning "soundId"
+  `;
+  const params = [fileUrl];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
     })
     .catch(err => next(err));
 });

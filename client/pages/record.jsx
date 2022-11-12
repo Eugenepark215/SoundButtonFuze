@@ -1,6 +1,5 @@
 import React from 'react';
 import NavBar from '../components/nav-bar';
-const audioType = 'audio/*';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -9,6 +8,7 @@ export default class Recording extends React.Component {
       recordingStatus: null,
       audios: ''
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -33,14 +33,24 @@ export default class Recording extends React.Component {
     event.preventDefault();
     this.mediaRecorder.stop();
     this.setState({ recordingStatus: false });
-    this.saveAudio();
+    this.playAudio();
   }
 
-  saveAudio() {
-    const blob = new Blob(this.chunks, { type: audioType });
+  playAudio() {
+    const blob = new Blob(this.chunks, { type: 'audio/mpeg' });
     const audioURL = window.URL.createObjectURL(blob);
     const audios = audioURL;
     this.setState({ audios });
+  }
+
+  handleSubmit(event) {
+    const formData = new FormData();
+    formData.append('fileUrl', this.state.audios);
+    const req = {
+      method: 'POST',
+      body: formData
+    };
+    fetch('/api/sounds', req);
   }
 
   render() {
@@ -67,6 +77,7 @@ export default class Recording extends React.Component {
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
+          {this.state.audios && <button onClick={event => this.handleSubmit(event)}>Submit</button>}
         </div>
       </div>
     );
