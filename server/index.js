@@ -38,7 +38,8 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
   }
   const sql = `
   select "soundId",
-          "soundName"
+          "soundName",
+          "fileUrl"
   from "sounds"
   where "soundId" = $1
   `;
