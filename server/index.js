@@ -23,6 +23,7 @@ app.get('/api/sounds', (req, res, next) => {
   "soundId",
   "fileUrl"
   from "sounds"
+  order by "uploadedAt" desc
   `;
   db.query(sql)
     .then(result => {

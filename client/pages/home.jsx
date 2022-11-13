@@ -5,7 +5,8 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: []
+      sounds: [],
+      current: null
     };
   }
 
@@ -16,6 +17,19 @@ export default class Home extends React.Component {
         this.setState({ sounds: sound });
       });
   }
+
+  audioPlay(event) {
+    const sound = new Audio();
+    for (let i = 0; i < this.state.sounds.length; i++) {
+      if (parseInt(event.target.id) === i) {
+        sound.src = this.state.sounds[i].fileUrl;
+        sound.play();
+        this.setState({ current: true });
+      }
+    }
+  }
+  // can store the new audio in state
+  // then call the play and stop
 
   render() {
     return (
@@ -32,8 +46,8 @@ export default class Home extends React.Component {
             return (
               <div className='button-column' key={sound.soundId}>
                 <div className='display-flex align-center justify-content-center flex-direction-column'>
-                  <button className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} />
-                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top' onClick={this.handleClick}>{sound.soundName}</a>
+                  <button className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} id={index} onClick={event => this.audioPlay(event)} />
+                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
                 </div>
               </div>
             );
