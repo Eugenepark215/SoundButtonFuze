@@ -76,7 +76,9 @@ export default class Recording extends React.Component {
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
-          {this.state.audios && <a href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
+          <div className='submit-button-container'>
+            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
+          </div>
         </div>
       </div>
     );
