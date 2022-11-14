@@ -20,11 +20,14 @@ export default class Home extends React.Component {
 
   audioPlay(event) {
     const sound = new Audio();
+    if (this.state.current) {
+      this.state.current.pause();
+    }
     for (let i = 0; i < this.state.sounds.length; i++) {
       if (parseInt(event.target.id) === i) {
         sound.src = this.state.sounds[i].fileUrl;
         sound.play();
-        this.setState({ current: true });
+        this.setState({ current: sound });
       }
     }
   }
@@ -47,7 +50,7 @@ export default class Home extends React.Component {
               <div className='button-column' key={sound.soundId}>
                 <div className='display-flex align-center justify-content-center flex-direction-column'>
                   <button className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} id={index} onClick={event => this.audioPlay(event)} />
-                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
+                  <a onClick={event => this.audioPlay(event)} href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
                 </div>
               </div>
             );
