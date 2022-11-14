@@ -1,16 +1,5 @@
 import React from 'react';
 import NavBar from '../components/nav-bar';
-import Home from './home';
-
-const colors = [
-  'red-background',
-  'blue-background',
-  'purple-background',
-  'green-background',
-  'yellow-background',
-  'orange-background',
-  'pink-background',
-  'black-background'];
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -62,13 +51,9 @@ export default class Recording extends React.Component {
       body: formData
     };
     fetch('/api/sounds', req);
-    this.setState({ audios: false });
   }
 
   render() {
-    if (this.state.audios === false) {
-      return <Home colors = {colors} />;
-    }
     return (
       <div>
         <div>
@@ -91,7 +76,7 @@ export default class Recording extends React.Component {
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
-          {this.state.audios && <button onClick={event => this.handleSubmit(event)}>Submit</button>}
+          {this.state.audios && <a href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
         </div>
       </div>
     );
