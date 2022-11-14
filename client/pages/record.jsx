@@ -1,6 +1,5 @@
 import React from 'react';
 import NavBar from '../components/nav-bar';
-const audioType = 'audio/*';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -9,6 +8,7 @@ export default class Recording extends React.Component {
       recordingStatus: null,
       audios: ''
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -24,7 +24,6 @@ export default class Recording extends React.Component {
 
   start(event) {
     event.preventDefault();
-    this.chunks = [];
     this.mediaRecorder.start(10);
     this.setState({ recordingStatus: true });
   }
@@ -33,18 +32,28 @@ export default class Recording extends React.Component {
     event.preventDefault();
     this.mediaRecorder.stop();
     this.setState({ recordingStatus: false });
-    this.saveAudio();
+    this.playAudio();
   }
 
-  saveAudio() {
-    const blob = new Blob(this.chunks, { type: audioType });
+  playAudio() {
+    const blob = new Blob(this.chunks, { type: 'audio/mp3' });
     const audioURL = window.URL.createObjectURL(blob);
     const audios = audioURL;
     this.setState({ audios });
   }
 
-  render() {
+  handleSubmit(event) {
+    const formData = new FormData();
+    const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
+    formData.append('fileUrl', file);
+    const req = {
+      method: 'POST',
+      body: formData
+    };
+    fetch('/api/sounds', req);
+  }
 
+  render() {
     return (
       <div>
         <div>
@@ -66,6 +75,9 @@ export default class Recording extends React.Component {
               this.audio = a;
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
+          </div>
+          <div className='submit-button-container'>
+            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
           </div>
         </div>
       </div>

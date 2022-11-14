@@ -19,7 +19,7 @@ export default class SoundButtonDetail extends React.Component {
 
   render() {
     if (!this.state.current) return null;
-    const color = this.props.colors[(this.props.soundId - 1) % this.props.colors.length];
+    const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
       <div>
         <div>

@@ -5,7 +5,8 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: []
+      sounds: [],
+      current: null
     };
   }
 
@@ -28,12 +29,12 @@ export default class Home extends React.Component {
         </div>
         <div className='button-container display-flex flex-wrap'>
           {this.state.sounds.map((sound, index) => {
-            const color = this.props.colors[index % this.props.colors.length];
+            const color = this.props.colors[sound.soundId % this.props.colors.length];
             return (
               <div className='button-column' key={sound.soundId}>
                 <div className='display-flex align-center justify-content-center flex-direction-column'>
                   <button className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} />
-                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top' onClick={this.handleClick}>{sound.soundName}</a>
+                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
                 </div>
               </div>
             );

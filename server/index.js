@@ -4,9 +4,11 @@ const express = require('express');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const ClientError = require('./client-error');
+const uploadsMiddleware = require('./uploads-middleware');
+const path = require('path');
 
 const app = express();
-
+app.use(express.json());
 app.use(staticMiddleware);
 
 const db = new pg.Pool({
@@ -22,6 +24,7 @@ app.get('/api/sounds', (req, res, next) => {
   "soundId",
   "fileUrl"
   from "sounds"
+  order by "uploadedAt" desc
   `;
   db.query(sql)
     .then(result => {
@@ -37,7 +40,8 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
   }
   const sql = `
   select "soundId",
-          "soundName"
+          "soundName",
+          "fileUrl"
   from "sounds"
   where "soundId" = $1
   `;
@@ -48,6 +52,25 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
         throw new ClientError(404, `cannot find sound with soundId ${soundId}`);
       }
       res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
+  const filename = req.file.filename;
+  if (!filename) {
+    throw new ClientError(400, 'does not exist');
+  }
+  const newUrl = path.join('/sounds', filename);
+  const sql = `
+  insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
+  values ($1, 'hi', 1, now())
+  returning "soundId"
+  `;
+  const params = [newUrl];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
     })
     .catch(err => next(err));
 });

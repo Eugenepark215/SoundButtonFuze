@@ -14,6 +14,10 @@
   text-decoration: none;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 i {
   font-size: x-large;
 }
@@ -119,6 +123,22 @@ a {
 
 .icon-recording {
   font-size: 50px;
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+.submit-button {
+  text-decoration: none;
+  font-size: x-large;
+  padding: 1rem;
+  border-radius: 15px;
+  justify-content: center;
+  display: flex;
 }
 
 @media screen and (min-width: 750px) {
