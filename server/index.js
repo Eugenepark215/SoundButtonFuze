@@ -5,6 +5,7 @@ const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const ClientError = require('./client-error');
 const uploadsMiddleware = require('./uploads-middleware');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -56,16 +57,17 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
 });
 
 app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
-  const { fileUrl } = req.body;
-  if (!fileUrl) {
-    throw new ClientError(400, 'file name must be a string');
+  const filename = req.file.filename;
+  if (!filename) {
+    throw new ClientError(400, 'does not exist');
   }
+  const newUrl = path.join('/sounds', filename);
   const sql = `
   insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
   values ($1, 'hi', 1, now())
   returning "soundId"
   `;
-  const params = [fileUrl];
+  const params = [newUrl];
   return db.query(sql, params)
     .then(result => {
       res.status(201).json(result.rows[0]);

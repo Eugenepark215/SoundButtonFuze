@@ -1,5 +1,16 @@
 import React from 'react';
 import NavBar from '../components/nav-bar';
+import Home from './home';
+
+const colors = [
+  'red-background',
+  'blue-background',
+  'purple-background',
+  'green-background',
+  'yellow-background',
+  'orange-background',
+  'pink-background',
+  'black-background'];
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -24,7 +35,6 @@ export default class Recording extends React.Component {
 
   start(event) {
     event.preventDefault();
-    this.chunks = [];
     this.mediaRecorder.start(10);
     this.setState({ recordingStatus: true });
   }
@@ -37,7 +47,7 @@ export default class Recording extends React.Component {
   }
 
   playAudio() {
-    const blob = new Blob(this.chunks, { type: 'audio/mpeg' });
+    const blob = new Blob(this.chunks, { type: 'audio/mp3' });
     const audioURL = window.URL.createObjectURL(blob);
     const audios = audioURL;
     this.setState({ audios });
@@ -45,16 +55,20 @@ export default class Recording extends React.Component {
 
   handleSubmit(event) {
     const formData = new FormData();
-    formData.append('fileUrl', this.state.audios);
+    const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
+    formData.append('fileUrl', file);
     const req = {
       method: 'POST',
       body: formData
     };
     fetch('/api/sounds', req);
+    this.setState({ audios: false });
   }
 
   render() {
-
+    if (this.state.audios === false) {
+      return <Home colors = {colors} />;
+    }
     return (
       <div>
         <div>
