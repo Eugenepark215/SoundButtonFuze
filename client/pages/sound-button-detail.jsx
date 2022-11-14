@@ -9,6 +9,12 @@ export default class SoundButtonDetail extends React.Component {
     };
   }
 
+  audioPlay(event) {
+    const sound = new Audio();
+    sound.src = this.state.current.fileUrl;
+    sound.play();
+  }
+
   componentDidMount() {
     fetch(`api/sounds/${this.props.soundId}`)
       .then(res => res.json())
@@ -28,7 +34,7 @@ export default class SoundButtonDetail extends React.Component {
         <div className='flex-direction-column'>
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
-            <button className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
+            <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
             <button className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
