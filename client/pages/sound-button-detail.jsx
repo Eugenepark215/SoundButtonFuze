@@ -5,8 +5,17 @@ export default class SoundButtonDetail extends React.Component {
     super(props);
     this.state = {
       current: null,
-      playing: null
+      playing: null,
+      account: null
     };
+  }
+
+  componentDidMount() {
+    fetch(`api/sounds/${this.props.soundId}`)
+      .then(res => res.json())
+      .then(sound => {
+        this.setState({ current: sound });
+      });
   }
 
   audioPlay(event) {
@@ -26,19 +35,28 @@ export default class SoundButtonDetail extends React.Component {
     }
   }
 
-  componentDidMount() {
-    fetch(`api/sounds/${this.props.soundId}`)
-      .then(res => res.json())
-      .then(sound => {
-        this.setState({ current: sound });
-      });
+  modal(event) {
+    if (!this.state.account) {
+      this.setState({ account: true });
+    } else {
+      this.setState({ account: null });
+    }
+    this.stop(event);
   }
 
   render() {
     if (!this.state.current) return null;
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
+    const view = this.state.account ? 'hidden' : '';
     return (
       <div>
+        {this.state.account && <div className={`transparent ${view}`}>
+          <div className='modal'>
+            <h3>Sign Up</h3>
+            <input type='text' placeholder='Username' />
+            <input type='text' placeholder='Password' />
+          </div>
+        </div>}
         <div>
           <div className="container drop-shadow">
             <div className="row cyan-background">
@@ -59,7 +77,7 @@ export default class SoundButtonDetail extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i className="fa-solid fa-bookmark white" />
+                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
@@ -69,7 +87,7 @@ export default class SoundButtonDetail extends React.Component {
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
-            <button className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
+            <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
       </div>
