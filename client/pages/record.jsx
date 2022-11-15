@@ -6,9 +6,11 @@ export default class Recording extends React.Component {
     super(props);
     this.state = {
       recordingStatus: null,
-      audios: ''
+      audios: '',
+      caption: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCaptionChange = this.handleCaptionChange.bind(this);
   }
 
   async componentDidMount() {
@@ -46,11 +48,16 @@ export default class Recording extends React.Component {
     const formData = new FormData();
     const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
     formData.append('fileUrl', file);
+    formData.append('soundName', this.state.caption);
     const req = {
       method: 'POST',
       body: formData
     };
     fetch('/api/sounds', req);
+  }
+
+  handleCaptionChange(event) {
+    this.setState({ caption: event.target.value });
   }
 
   render() {
@@ -78,6 +85,11 @@ export default class Recording extends React.Component {
           </div>
           <div className='submit-button-container'>
             {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
+          </div>
+          <div className='record-input-container'>
+            {this.state.audios && <label>Sound Name</label>}
+            {this.state.audios && <input className='record-input' type='text' placeholder='New Name' value={this.state.caption}
+              onChange={this.handleCaptionChange} />}
           </div>
         </div>
       </div>

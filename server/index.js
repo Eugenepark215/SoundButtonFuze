@@ -62,12 +62,13 @@ app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
     throw new ClientError(400, 'does not exist');
   }
   const newUrl = path.join('/sounds', filename);
+  const name = req.body;
   const sql = `
   insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
-  values ($1, 'hi', 1, now())
+  values ($1, $2, 1, now())
   returning "soundId"
   `;
-  const params = [newUrl];
+  const params = [newUrl, name];
   return db.query(sql, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
