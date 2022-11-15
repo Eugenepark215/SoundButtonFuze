@@ -1,5 +1,4 @@
 import React from 'react';
-import NavBar from '../components/nav-bar';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -18,11 +17,48 @@ export default class Home extends React.Component {
       });
   }
 
+  audioPlay(event) {
+    const sound = new Audio();
+    if (this.state.current) {
+      this.state.current.pause();
+    }
+    for (let i = 0; i < this.state.sounds.length; i++) {
+      if (parseInt(event.target.id) === i) {
+        sound.src = this.state.sounds[i].fileUrl;
+        sound.play();
+        this.setState({ current: sound });
+      }
+    }
+  }
+
   render() {
     return (
       <div>
         <div>
-          <NavBar />
+          <div className="container drop-shadow">
+            <div className="row cyan-background">
+              <div className="nav-header-column column-half">
+                <a href='#' onClick={event => this.audioPlay(event)} className='text-decoration-none'>
+                  <h2 className='nav-bar-header white lucida-sans'>SoundButtonFuze</h2>
+                </a>
+              </div>
+              <div className="icon-container row align-center justify-content-center">
+                <div className="column-third text-align-center">
+                  <a onClick={event => this.audioPlay(event)} href='#'>
+                    <i className="fa-solid fa-house white" />
+                  </a>
+                </div>
+                <div className="column-third text-align-center">
+                  <a onClick={event => this.audioPlay(event)} href='#record'>
+                    <i className="fa-solid fa-microphone white" />
+                  </a>
+                </div>
+                <div className="column-third text-align-center">
+                  <i className="fa-solid fa-bookmark white" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div>
           <h2 className='sound-button-header text-align-center lucida-sans font-gray'>Sound Buttons</h2>
@@ -33,8 +69,8 @@ export default class Home extends React.Component {
             return (
               <div className='button-column' key={sound.soundId}>
                 <div className='display-flex align-center justify-content-center flex-direction-column'>
-                  <button className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} />
-                  <a href={`#sound?soundId=${sound.soundId}`} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
+                  <button id={index} onClick={event => this.audioPlay(event)} className={`sound-button drop-shadow border-radius-50 border-none justify-item-center ${color}`} />
+                  <a href={`#sound?soundId=${sound.soundId}`} onClick={event => this.audioPlay(event)} className='font-gray lucida-sans text-align-center margin-top'>{sound.soundName}</a>
                 </div>
               </div>
             );
