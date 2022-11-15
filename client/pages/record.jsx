@@ -7,10 +7,10 @@ export default class Recording extends React.Component {
     this.state = {
       recordingStatus: null,
       audios: '',
-      caption: ''
+      name: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCaptionChange = this.handleCaptionChange.bind(this);
+    this.handleNameChange = this.handleCaptionChange.bind(this);
   }
 
   async componentDidMount() {
@@ -48,16 +48,20 @@ export default class Recording extends React.Component {
     const formData = new FormData();
     const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
     formData.append('fileUrl', file);
-    formData.append('soundName', this.state.caption);
+    formData.append('soundName', this.state.name);
     const req = {
       method: 'POST',
       body: formData
     };
-    fetch('/api/sounds', req);
+    fetch('/api/sounds', req)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ name: '' });
+      });
   }
 
   handleCaptionChange(event) {
-    this.setState({ caption: event.target.value });
+    this.setState({ name: event.target.value });
   }
 
   render() {
@@ -88,8 +92,8 @@ export default class Recording extends React.Component {
           </div>
           <div className='record-input-container'>
             {this.state.audios && <label>Sound Name</label>}
-            {this.state.audios && <input className='record-input' type='text' placeholder='New Name' value={this.state.caption}
-              onChange={this.handleCaptionChange} />}
+            {this.state.audios && <input className='record-input' type='text' placeholder='New Name' value={this.state.name}
+              onChange={this.handleNameChange} />}
           </div>
         </div>
       </div>

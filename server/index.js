@@ -58,11 +58,11 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
 
 app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
   const filename = req.file.filename;
+  const name = req.body.soundName;
   if (!filename) {
     throw new ClientError(400, 'does not exist');
   }
   const newUrl = path.join('/sounds', filename);
-  const name = req.body;
   const sql = `
   insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
   values ($1, $2, 1, now())
