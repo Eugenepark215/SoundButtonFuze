@@ -6,9 +6,11 @@ export default class Recording extends React.Component {
     super(props);
     this.state = {
       recordingStatus: null,
-      audios: ''
+      audios: '',
+      name: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleNameChange = this.handleCaptionChange.bind(this);
   }
 
   async componentDidMount() {
@@ -46,11 +48,20 @@ export default class Recording extends React.Component {
     const formData = new FormData();
     const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
     formData.append('fileUrl', file);
+    formData.append('soundName', this.state.name);
     const req = {
       method: 'POST',
       body: formData
     };
-    fetch('/api/sounds', req);
+    fetch('/api/sounds', req)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ name: '' });
+      });
+  }
+
+  handleCaptionChange(event) {
+    this.setState({ name: event.target.value });
   }
 
   render() {
@@ -75,6 +86,13 @@ export default class Recording extends React.Component {
               this.audio = a;
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
+          </div>
+          <div className='justify-content-center display-flex'>
+            <div className='record-input-container lucida-sans font-gray  display-flex flex-direction-column'>
+              {this.state.audios && <label className='record-input-label lucida-sans gray'>Sound Name</label>}
+              {this.state.audios && <input className='record-input lucida-sans' type='text' placeholder='New Name' value={this.state.name}
+              onChange={this.handleNameChange} />}
+            </div>
           </div>
           <div className='submit-button-container'>
             {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
