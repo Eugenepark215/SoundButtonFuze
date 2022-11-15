@@ -121,6 +121,24 @@ a {
   margin-top: 4rem;
 }
 
+.record-input-container {
+  margin-top: 3rem;
+}
+
+.record-input-label {
+  font-size: large;
+}
+
+.record-input {
+  margin-top: 1rem;
+  border: solid 1px;
+  border-color: lightgray;
+  border-radius: 5px;
+  height: 40px;
+  width: 200px;
+  font-size: large;
+}
+
 .icon-recording {
   font-size: 50px;
 }
@@ -144,6 +162,11 @@ a {
 @media screen and (min-width: 750px) {
   .audio-player {
     width: 300px;
+  }
+
+  .record-input {
+    width: 300px;
+    height: 50px;
   }
 
   h2 {
@@ -171,6 +194,10 @@ a {
 
 @media screen and (min-width: 1100px) {
   .audio-player {
+    width: 500px;
+  }
+
+  .record-input {
     width: 500px;
   }
 }

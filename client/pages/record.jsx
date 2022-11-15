@@ -87,13 +87,15 @@ export default class Recording extends React.Component {
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
+          <div className='justify-content-center display-flex'>
+            <div className='record-input-container lucida-sans font-gray  display-flex flex-direction-column'>
+              {this.state.audios && <label className='record-input-label lucida-sans gray'>Sound Name</label>}
+              {this.state.audios && <input className='record-input lucida-sans' type='text' placeholder='New Name' value={this.state.name}
+              onChange={this.handleNameChange} />}
+            </div>
+          </div>
           <div className='submit-button-container'>
             {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
-          </div>
-          <div className='record-input-container'>
-            {this.state.audios && <label>Sound Name</label>}
-            {this.state.audios && <input className='record-input' type='text' placeholder='New Name' value={this.state.name}
-              onChange={this.handleNameChange} />}
           </div>
         </div>
       </div>
