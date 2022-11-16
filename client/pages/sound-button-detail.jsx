@@ -38,7 +38,7 @@ export default class SoundButtonDetail extends React.Component {
   modal(event) {
     if (!this.state.account) {
       this.setState({ account: true });
-    } else {
+    } else if (event.target.className === 'modal') {
       this.setState({ account: null });
     }
     this.stop(event);
@@ -47,16 +47,9 @@ export default class SoundButtonDetail extends React.Component {
   render() {
     if (!this.state.current) return null;
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
-    const view = this.state.account ? 'hidden' : '';
+    const view = this.state.account ? '' : 'hidden';
     return (
       <div>
-        {this.state.account && <div className={`transparent ${view}`}>
-          <div className='modal'>
-            <h3>Sign Up</h3>
-            <input type='text' placeholder='Username' />
-            <input type='text' placeholder='Password' />
-          </div>
-        </div>}
         <div>
           <div className="container drop-shadow">
             <div className="row cyan-background">
@@ -88,6 +81,18 @@ export default class SoundButtonDetail extends React.Component {
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
             <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
+          </div>
+        </div>
+        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+          <div className='modal'>
+            <div className='modal-row'>
+              <h2 className='auth-header font-gray'>Sign-Up</h2>
+              <input className='auth-input' type='text' placeholder='Username' />
+              <input className='auth-input' type='text' placeholder='Password' />
+              <div className='submit-auth-column cyan-background'>
+                <a className='submit-auth  white'>Submit</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
