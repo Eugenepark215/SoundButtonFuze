@@ -1,5 +1,5 @@
 import React from 'react';
-
+import AuthForm from '../components/auth-form';
 export default class Recording extends React.Component {
   constructor(props) {
     super(props);
@@ -127,20 +127,9 @@ export default class Recording extends React.Component {
             </div>
           </div>
           <div className='submit-button-container'>
-            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
+            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onSubmit={event => this.handleSubmit(event)}>Submit</a>}
           </div>
-          <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-            <div className='modal'>
-              <div className='modal-row'>
-                <h2 className='auth-header font-gray'>Sign-Up</h2>
-                <input className='auth-input' type='text' placeholder='Username' />
-                <input className='auth-input' type='text' placeholder='Password' />
-                <div className='submit-auth-column cyan-background'>
-                  <a className='submit-auth  white'>Submit</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AuthForm view={view} />
         </div>
       </div>
     );

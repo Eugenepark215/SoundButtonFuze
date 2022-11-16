@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -83,18 +84,7 @@ export default class SoundButtonDetail extends React.Component {
             <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
-        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-          <div className='modal'>
-            <div className='modal-row'>
-              <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input className='auth-input' type='text' placeholder='Username' />
-              <input className='auth-input' type='text' placeholder='Password' />
-              <div className='submit-auth-column cyan-background'>
-                <a className='submit-auth  white'>Submit</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AuthForm view={view}/>
       </div>
     );
   }

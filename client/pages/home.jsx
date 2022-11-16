@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -86,18 +87,7 @@ export default class Home extends React.Component {
             );
           })}
         </div>
-        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-          <div className='modal'>
-            <div className='modal-row'>
-              <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input className='auth-input' type='text' placeholder='Username' />
-              <input className='auth-input' type='text' placeholder='Password' />
-              <div className='submit-auth-column cyan-background'>
-                <a className='submit-auth  white'>Submit</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AuthForm view={view} />
       </div>
     );
   }
