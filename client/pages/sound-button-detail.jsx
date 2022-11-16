@@ -6,7 +6,9 @@ export default class SoundButtonDetail extends React.Component {
     this.state = {
       current: null,
       playing: null,
-      account: null
+      account: null,
+      username: '',
+      password: ''
     };
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
     this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
@@ -52,12 +54,18 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   handleSubmitAuth(event) {
-    event.preventDefault();
     const req = {
       method: 'POST',
-      body: JSON.stringify(this.state)
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      })
     };
     fetch('/api/users/', req);
+    this.setState({ account: null, username: '', password: '' });
   }
 
   render() {
@@ -100,16 +108,14 @@ export default class SoundButtonDetail extends React.Component {
           </div>
         </div>
         <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-          <div className='modal'>
+          <form className='modal' onSubmit={this.handleSubmitAuth}>
             <div className='modal-row'>
               <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
-              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
-              <div className='submit-auth-column cyan-background'>
-                <a onClick={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
-              </div>
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' name="username" value={this.state.username} />
+              <input onChange={this.handleChangeAuth} className='auth-input' type='password' placeholder='Password' name="password" value={this.state.password} />
+              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );

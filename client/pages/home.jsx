@@ -8,7 +8,8 @@ export default class Home extends React.Component {
       current: null,
       account: null,
       username: '',
-      password: ''
+      password: '',
+      error: ''
     };
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
     this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
@@ -55,6 +56,7 @@ export default class Home extends React.Component {
   }
 
   handleSubmitAuth(event) {
+    event.preventDefault();
     const req = {
       method: 'POST',
       headers: {
@@ -66,6 +68,13 @@ export default class Home extends React.Component {
       })
     };
     fetch('/api/users/', req);
+    this.setState({ account: null, username: '', password: '' });
+  }
+
+  keyDown(event) {
+    if (event.key === 'Enter' && this.state.username && this.state.password) {
+      this.handleSubmitAuth(event);
+    }
   }
 
   render() {
@@ -118,11 +127,9 @@ export default class Home extends React.Component {
           <form className='modal' onSubmit={this.handleSubmitAuth}>
             <div className='modal-row'>
               <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' name="username" />
-              <input onChange={this.handleChangeAuth} className='auth-input' type='password' placeholder='Password' name="password" />
-              <div className='submit-auth-column cyan-background'>
-                <button type="submit" className='submit-auth  white'>Submit</button>
-              </div>
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' name="username" value={this.state.username}/>
+              <input onChange={this.handleChangeAuth} className='auth-input' type='password' placeholder='Password' name="password" value={this.state.password}/>
+              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
             </div>
           </form>
         </div>

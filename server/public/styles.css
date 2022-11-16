@@ -217,8 +217,18 @@ a {
 }
 
 .submit-auth {
-  text-decoration: none;
   font-size: large;
+  border: none;
+  margin-right: 0.5rem;
+  margin-left: auto;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.auth-input:focus {
+  outline: none;
+  border: 1px solid rgb(110 223 246);
 }
 
 @media screen and (min-width: 750px) {
