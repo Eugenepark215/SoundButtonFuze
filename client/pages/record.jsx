@@ -11,7 +11,8 @@ export default class Recording extends React.Component {
       account: null,
       submit: null,
       username: '',
-      password: ''
+      password: '',
+      error: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -63,12 +64,6 @@ export default class Recording extends React.Component {
     this.setState({ submit: true });
   }
 
-  keyDown(event) {
-    if (event.key === 'Enter') {
-      this.handleSubmit(event);
-    }
-  }
-
   handleNameChange(event) {
     this.setState({ name: event.target.value });
   }
@@ -83,10 +78,14 @@ export default class Recording extends React.Component {
 
   handleChangeAuth(event) {
     const { name, value } = event.target;
+    if (this.state.error) {
+      this.setState({ error: '', [name]: value });
+    }
     this.setState({ [name]: value });
   }
 
   handleSubmitAuth(event) {
+    event.preventDefault();
     const req = {
       method: 'POST',
       headers: {
@@ -97,11 +96,18 @@ export default class Recording extends React.Component {
         password: this.state.password
       })
     };
-    fetch('/api/users/', req);
-    this.setState({ account: null, username: '', password: '' });
+    fetch('/api/users/', req)
+      .then(res => {
+        if (!res.ok) {
+          this.setState({ error: true });
+        } else if (res.ok) {
+          this.setState({ error: '', account: null, username: '', password: '' });
+        }
+      });
   }
 
   render() {
+    const error = this.state.error ? 'error-input' : '';
     const view = this.state.account ? '' : 'hidden';
     if (this.state.submit === true) {
       return <Redirect to="" />;
@@ -151,22 +157,27 @@ export default class Recording extends React.Component {
             }} />
             {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
-          <div className='justify-content-center display-flex'>
-            <div className='record-input-container lucida-sans font-gray  display-flex flex-direction-column'>
-              {this.state.audios && <label className='record-input-label lucida-sans gray'>Sound Name</label>}
-              {this.state.audios && <input className='record-input lucida-sans' type='text' placeholder='New Name' value={this.state.name}
-                onKeyDown={event => this.keyDown(event)} onChange={this.handleNameChange} />}
+          {this.state.audios && <form onSubmit={this.handleSubmit} className='justify-content-center display-flex flex-direction-column'>
+            <div className='record-input-container lucida-sans font-gray display-flex flex-direction-column'>
+              <div className='display-flex flex-direction-column'>
+                <label className='record-input-label lucida-sans gray' >Sound Name</label>
+                <input required className='record-input lucida-sans' type='text' placeholder='New Name' value={this.state.name}
+                onChange={this.handleNameChange} />
+              </div>
             </div>
-          </div>
-          <div className='submit-button-container'>
-            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
-          </div>
+            <div className='submit-button-container'>
+              <button type="submit" className='submit-button lucida-sans white cyan-background'>Submit</button>
+            </div>
+          </form>}
           <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
             <form className='modal' onSubmit={this.handleSubmitAuth}>
               <div className='modal-row'>
                 <h2 className='auth-header font-gray'>Sign-Up</h2>
-                <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' name="username" value={this.state.username}/>
-                <input onChange={this.handleChangeAuth} className='auth-input' type='password' placeholder='Password' name="password" value={this.state.password}/>
+                <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
+                  placeholder='Username' name="username" value={this.state.username} />
+                {this.state.error && <div className='error'>Username must be unique</div>}
+                <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
+                  placeholder='Password' name="password" value={this.state.password} />
                 <button type="submit" className='submit-auth cyan-background white'>Submit</button>
               </div>
             </form>

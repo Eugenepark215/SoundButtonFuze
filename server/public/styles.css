@@ -123,6 +123,7 @@ a {
 
 .record-input-container {
   margin-top: 3rem;
+  align-items: center;
 }
 
 .record-input-label {
@@ -151,7 +152,7 @@ a {
 }
 
 .submit-button {
-  text-decoration: none;
+  border: none;
   font-size: x-large;
   padding: 1rem;
   border-radius: 15px;
@@ -226,7 +227,17 @@ a {
   border-radius: 5px;
 }
 
-.auth-input:focus {
+.error {
+  color: red;
+  margin-left: 0.5rem;
+}
+
+.error-input {
+  outline: none;
+  border: 1px solid red;
+}
+
+.error-input:focus {
   outline: none;
   border: 1px solid rgb(110 223 246);
 }

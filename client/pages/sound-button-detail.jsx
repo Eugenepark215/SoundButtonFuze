@@ -8,7 +8,8 @@ export default class SoundButtonDetail extends React.Component {
       playing: null,
       account: null,
       username: '',
-      password: ''
+      password: '',
+      error: ''
     };
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
     this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
@@ -50,10 +51,14 @@ export default class SoundButtonDetail extends React.Component {
 
   handleChangeAuth(event) {
     const { name, value } = event.target;
+    if (this.state.error) {
+      this.setState({ error: '', [name]: value });
+    }
     this.setState({ [name]: value });
   }
 
   handleSubmitAuth(event) {
+    event.preventDefault();
     const req = {
       method: 'POST',
       headers: {
@@ -64,14 +69,21 @@ export default class SoundButtonDetail extends React.Component {
         password: this.state.password
       })
     };
-    fetch('/api/users/', req);
-    this.setState({ account: null, username: '', password: '' });
+    fetch('/api/users/', req)
+      .then(res => {
+        if (!res.ok) {
+          this.setState({ error: true });
+        } else if (res.ok) {
+          this.setState({ error: '', account: null, username: '', password: '' });
+        }
+      });
   }
 
   render() {
     if (!this.state.current) return null;
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     const view = this.state.account ? '' : 'hidden';
+    const error = this.state.error ? 'error-input' : '';
     return (
       <div>
         <div>
@@ -111,8 +123,11 @@ export default class SoundButtonDetail extends React.Component {
           <form className='modal' onSubmit={this.handleSubmitAuth}>
             <div className='modal-row'>
               <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' name="username" value={this.state.username} />
-              <input onChange={this.handleChangeAuth} className='auth-input' type='password' placeholder='Password' name="password" value={this.state.password} />
+              <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
+                placeholder='Username' name="username" value={this.state.username} />
+              {this.state.error && <div className='error'>Username must be unique</div>}
+              <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
+                placeholder='Password' name="password" value={this.state.password} />
               <button type="submit" className='submit-auth cyan-background white'>Submit</button>
             </div>
           </form>
