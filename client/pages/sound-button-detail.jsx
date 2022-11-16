@@ -1,5 +1,4 @@
 import React from 'react';
-import AuthForm from '../components/auth-form';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -9,6 +8,8 @@ export default class SoundButtonDetail extends React.Component {
       playing: null,
       account: null
     };
+    this.handleChangeAuth = this.handleChangeAuth.bind(this);
+    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
 
   componentDidMount() {
@@ -37,12 +38,26 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   modal(event) {
-    if (!this.state.account) {
-      this.setState({ account: true });
-    } else if (event.target.className === 'modal') {
+    if (this.state.account && event.target.className === 'modal') {
       this.setState({ account: null });
+    } else if (!this.state.account) {
+      this.setState({ account: true });
     }
     this.stop(event);
+  }
+
+  handleChangeAuth(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmitAuth(event) {
+    event.preventDefault();
+    const req = {
+      method: 'POST',
+      body: JSON.stringify(this.state)
+    };
+    fetch('/api/users/', req);
   }
 
   render() {
@@ -84,7 +99,18 @@ export default class SoundButtonDetail extends React.Component {
             <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
-        <AuthForm view={view}/>
+        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+          <div className='modal'>
+            <div className='modal-row'>
+              <h2 className='auth-header font-gray'>Sign-Up</h2>
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
+              <div className='submit-auth-column cyan-background'>
+                <a onSubmit={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

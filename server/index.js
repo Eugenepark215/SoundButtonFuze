@@ -77,7 +77,7 @@ app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('api/users', (req, res, next) => {
+app.post('/api/users', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and passwords are required fields');
@@ -86,7 +86,7 @@ app.post('api/users', (req, res, next) => {
     .hash(password)
     .then(hashedPassword => {
       const sql = `
-    insert into "users" ("username", "hahsedPassword")
+    insert into "users" ("username", "hashedPassword")
     values ($1, $2)
     returning "userId", "username"
     `;

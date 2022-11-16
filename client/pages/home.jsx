@@ -1,5 +1,4 @@
 import React from 'react';
-import AuthForm from '../components/auth-form';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -9,6 +8,8 @@ export default class Home extends React.Component {
       current: null,
       account: null
     };
+    this.handleChangeAuth = this.handleChangeAuth.bind(this);
+    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
 
   componentDidMount() {
@@ -34,11 +35,30 @@ export default class Home extends React.Component {
   }
 
   modal(event) {
-    if (!this.state.account) {
-      this.setState({ account: true });
-    } else if (event.target.className === 'modal') {
+    if (this.state.account && event.target.className === 'modal') {
       this.setState({ account: null });
+    } else if (!this.state.account) {
+      this.setState({ account: true });
     }
+  }
+
+  modalAudioPlay(event) {
+    this.audioPlay(event);
+    this.modal(event);
+  }
+
+  handleChangeAuth(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmitAuth(event) {
+    event.preventDefault();
+    const req = {
+      method: 'POST',
+      body: JSON.stringify(this.state)
+    };
+    fetch('/api/users/', req);
   }
 
   render() {
@@ -65,7 +85,7 @@ export default class Home extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
+                  <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
@@ -87,7 +107,18 @@ export default class Home extends React.Component {
             );
           })}
         </div>
-        <AuthForm view={view} />
+        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+          <div className='modal'>
+            <div className='modal-row'>
+              <h2 className='auth-header font-gray'>Sign-Up</h2>
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
+              <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
+              <div className='submit-auth-column cyan-background'>
+                <a onSubmit={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

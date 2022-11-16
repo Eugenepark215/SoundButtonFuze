@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from '../components/auth-form';
+
 export default class Recording extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +11,8 @@ export default class Recording extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleCaptionChange.bind(this);
+    this.handleChangeAuth = this.handleChangeAuth.bind(this);
+    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
 
   async componentDidMount() {
@@ -65,11 +67,25 @@ export default class Recording extends React.Component {
   }
 
   modal(event) {
-    if (!this.state.account) {
-      this.setState({ account: true });
-    } else if (event.target.className === 'modal') {
+    if (this.state.account && event.target.className === 'modal') {
       this.setState({ account: null });
+    } else if (!this.state.account) {
+      this.setState({ account: true });
     }
+  }
+
+  handleChangeAuth(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmitAuth(event) {
+    event.preventDefault();
+    const req = {
+      method: 'POST',
+      body: JSON.stringify(this.state)
+    };
+    fetch('/api/users/', req);
   }
 
   render() {
@@ -129,7 +145,18 @@ export default class Recording extends React.Component {
           <div className='submit-button-container'>
             {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onSubmit={event => this.handleSubmit(event)}>Submit</a>}
           </div>
-          <AuthForm view={view} />
+          <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+            <div className='modal'>
+              <div className='modal-row'>
+                <h2 className='auth-header font-gray'>Sign-Up</h2>
+                <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
+                <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
+                <div className='submit-auth-column cyan-background'>
+                  <a onSubmit={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
