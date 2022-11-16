@@ -5,7 +5,8 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       sounds: [],
-      current: null
+      current: null,
+      account: null
     };
   }
 
@@ -31,7 +32,16 @@ export default class Home extends React.Component {
     }
   }
 
+  modal(event) {
+    if (!this.state.account) {
+      this.setState({ account: true });
+    } else if (event.target.className === 'modal') {
+      this.setState({ account: null });
+    }
+  }
+
   render() {
+    const view = this.state.account ? '' : 'hidden';
     return (
       <div>
         <div>
@@ -54,7 +64,7 @@ export default class Home extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i className="fa-solid fa-bookmark white" />
+                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
@@ -75,6 +85,18 @@ export default class Home extends React.Component {
               </div>
             );
           })}
+        </div>
+        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+          <div className='modal'>
+            <div className='modal-row'>
+              <h2 className='auth-header font-gray'>Sign-Up</h2>
+              <input className='auth-input' type='text' placeholder='Username' />
+              <input className='auth-input' type='text' placeholder='Password' />
+              <div className='submit-auth-column cyan-background'>
+                <a className='submit-auth  white'>Submit</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,4 @@
 import React from 'react';
-import NavBar from '../components/nav-bar';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -7,7 +6,8 @@ export default class Recording extends React.Component {
     this.state = {
       recordingStatus: null,
       audios: '',
-      name: ''
+      name: '',
+      account: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleCaptionChange.bind(this);
@@ -64,11 +64,43 @@ export default class Recording extends React.Component {
     this.setState({ name: event.target.value });
   }
 
+  modal(event) {
+    if (!this.state.account) {
+      this.setState({ account: true });
+    } else if (event.target.className === 'modal') {
+      this.setState({ account: null });
+    }
+  }
+
   render() {
+    const view = this.state.account ? '' : 'hidden';
     return (
       <div>
         <div>
-          <NavBar />
+          <div className="container drop-shadow">
+            <div className="row cyan-background">
+              <div className="nav-header-column column-half">
+                <a href='#' className='text-decoration-none'>
+                  <h2 className='nav-bar-header white lucida-sans'>SoundButtonFuze</h2>
+                </a>
+              </div>
+              <div className="icon-container row align-center justify-content-center">
+                <div className="column-third text-align-center">
+                  <a href='#'>
+                    <i className="fa-solid fa-house white" />
+                  </a>
+                </div>
+                <div className="column-third text-align-center">
+                  <a href='#record'>
+                    <i className="fa-solid fa-microphone white" />
+                  </a>
+                </div>
+                <div className="column-third text-align-center">
+                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div />
         <div className='flex-direction-column'>
@@ -96,6 +128,18 @@ export default class Recording extends React.Component {
           </div>
           <div className='submit-button-container'>
             {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
+          </div>
+          <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
+            <div className='modal'>
+              <div className='modal-row'>
+                <h2 className='auth-header font-gray'>Sign-Up</h2>
+                <input className='auth-input' type='text' placeholder='Username' />
+                <input className='auth-input' type='text' placeholder='Password' />
+                <div className='submit-auth-column cyan-background'>
+                  <a className='submit-auth  white'>Submit</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
