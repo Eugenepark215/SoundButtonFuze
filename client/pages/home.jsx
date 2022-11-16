@@ -114,7 +114,7 @@ export default class Home extends React.Component {
               <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
               <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
               <div className='submit-auth-column cyan-background'>
-                <a onSubmit={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
+                <a onClick={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
               </div>
             </div>
           </div>

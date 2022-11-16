@@ -1,4 +1,5 @@
 import React from 'react';
+import Redirect from '../components/redirect';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -7,10 +8,11 @@ export default class Recording extends React.Component {
       recordingStatus: null,
       audios: '',
       name: '',
-      account: null
+      account: null,
+      submit: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleNameChange = this.handleCaptionChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
     this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
@@ -55,14 +57,17 @@ export default class Recording extends React.Component {
       method: 'POST',
       body: formData
     };
-    fetch('/api/sounds', req)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({ name: '' });
-      });
+    fetch('/api/sounds', req);
+    this.setState({ submit: true });
   }
 
-  handleCaptionChange(event) {
+  keyDown(event) {
+    if (event.key === 'Enter') {
+      this.handleSubmit(event);
+    }
+  }
+
+  handleNameChange(event) {
     this.setState({ name: event.target.value });
   }
 
@@ -90,6 +95,9 @@ export default class Recording extends React.Component {
 
   render() {
     const view = this.state.account ? '' : 'hidden';
+    if (this.state.submit === true) {
+      return <Redirect to="" />;
+    }
     return (
       <div>
         <div>
@@ -139,11 +147,11 @@ export default class Recording extends React.Component {
             <div className='record-input-container lucida-sans font-gray  display-flex flex-direction-column'>
               {this.state.audios && <label className='record-input-label lucida-sans gray'>Sound Name</label>}
               {this.state.audios && <input className='record-input lucida-sans' type='text' placeholder='New Name' value={this.state.name}
-              onChange={this.handleNameChange} />}
+                onKeyDown={event => this.keyDown(event)} onChange={this.handleNameChange} />}
             </div>
           </div>
           <div className='submit-button-container'>
-            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onSubmit={event => this.handleSubmit(event)}>Submit</a>}
+            {this.state.audios && <a className='submit-button lucida-sans white cyan-background' href='#' onClick={event => this.handleSubmit(event)}>Submit</a>}
           </div>
           <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
             <div className='modal'>
@@ -152,7 +160,7 @@ export default class Recording extends React.Component {
                 <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Username' value={this.state.username} />
                 <input onChange={this.handleChangeAuth} className='auth-input' type='text' placeholder='Password' value={this.state.password} />
                 <div className='submit-auth-column cyan-background'>
-                  <a onSubmit={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
+                  <a onClick={this.handleSubmitAuth} className='submit-auth  white'>Submit</a>
                 </div>
               </div>
             </div>
