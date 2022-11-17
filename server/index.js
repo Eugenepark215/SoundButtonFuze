@@ -6,6 +6,7 @@ const errorMiddleware = require('./error-middleware');
 const ClientError = require('./client-error');
 const uploadsMiddleware = require('./uploads-middleware');
 const path = require('path');
+const argon2 = require('argon2');
 
 const app = express();
 app.use(express.json());
@@ -72,6 +73,28 @@ app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
   return db.query(sql, params)
     .then(result => {
       res.status(201).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/users', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and passwords are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+    insert into "users" ("username", "hashedPassword")
+    values ($1, $2)
+    returning "userId", "username"
+    `;
+      const params = [username, hashedPassword];
+      return db.query(sql, params);
+    }).then(result => {
+      const [user] = result.rows;
+      res.status(201).json(user);
     })
     .catch(err => next(err));
 });

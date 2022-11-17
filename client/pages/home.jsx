@@ -1,12 +1,15 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sounds: [],
-      current: null
+      current: null,
+      account: null
     };
+
   }
 
   componentDidMount() {
@@ -29,6 +32,22 @@ export default class Home extends React.Component {
         this.setState({ current: sound });
       }
     }
+  }
+
+  modal(event) {
+    if (this.state.account) {
+      return this.setState({ account: null });
+    }
+    this.setState({ account: true });
+  }
+
+  modalAudioPlay(event) {
+    this.audioPlay(event);
+    this.modal(event);
+  }
+
+  handleModalClose(event) {
+    this.setState({ account: null });
   }
 
   render() {
@@ -54,7 +73,7 @@ export default class Home extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i className="fa-solid fa-bookmark white" />
+                  <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
@@ -76,6 +95,7 @@ export default class Home extends React.Component {
             );
           })}
         </div>
+        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)}/>}
       </div>
     );
   }

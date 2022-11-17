@@ -1,12 +1,22 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       current: null,
-      playing: null
+      playing: null,
+      account: null
     };
+  }
+
+  componentDidMount() {
+    fetch(`api/sounds/${this.props.soundId}`)
+      .then(res => res.json())
+      .then(sound => {
+        this.setState({ current: sound });
+      });
   }
 
   audioPlay(event) {
@@ -26,12 +36,17 @@ export default class SoundButtonDetail extends React.Component {
     }
   }
 
-  componentDidMount() {
-    fetch(`api/sounds/${this.props.soundId}`)
-      .then(res => res.json())
-      .then(sound => {
-        this.setState({ current: sound });
-      });
+  modal(event) {
+    if (this.state.account) {
+      this.stop(event);
+      return this.setState({ account: null });
+    }
+    this.stop(event);
+    this.setState({ account: true });
+  }
+
+  handleModalClose(event) {
+    this.setState({ account: null });
   }
 
   render() {
@@ -59,7 +74,7 @@ export default class SoundButtonDetail extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i className="fa-solid fa-bookmark white" />
+                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
@@ -69,9 +84,10 @@ export default class SoundButtonDetail extends React.Component {
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
-            <button className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
+            <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
+        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
       </div>
     );
   }
