@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -6,13 +7,9 @@ export default class Home extends React.Component {
     this.state = {
       sounds: [],
       current: null,
-      account: null,
-      username: '',
-      password: '',
-      error: ''
+      account: null
     };
-    this.handleChangeAuth = this.handleChangeAuth.bind(this);
-    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
+
   }
 
   componentDidMount() {
@@ -38,11 +35,10 @@ export default class Home extends React.Component {
   }
 
   modal(event) {
-    if (this.state.account && event.target.className === 'modal') {
-      this.setState({ account: null });
-    } else if (!this.state.account) {
-      this.setState({ account: true });
+    if (this.state.account) {
+      return this.setState({ account: null });
     }
+    this.setState({ account: true });
   }
 
   modalAudioPlay(event) {
@@ -50,39 +46,11 @@ export default class Home extends React.Component {
     this.modal(event);
   }
 
-  handleChangeAuth(event) {
-    const { name, value } = event.target;
-    if (this.state.error) {
-      this.setState({ error: '', [name]: value });
-    }
-    this.setState({ [name]: value });
-  }
-
-  handleSubmitAuth(event) {
-    event.preventDefault();
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
-      })
-    };
-    fetch('/api/users/', req)
-      .then(res => {
-        if (!res.ok) {
-          this.setState({ error: true });
-        } else if (res.ok) {
-          this.setState({ error: '', account: null, username: '', password: '' });
-        }
-      });
+  handleModalClose(event) {
+    this.setState({ account: null });
   }
 
   render() {
-    const view = this.state.account ? '' : 'hidden';
-    const error = this.state.error ? 'error-input' : '';
     return (
       <div>
         <div>
@@ -127,19 +95,7 @@ export default class Home extends React.Component {
             );
           })}
         </div>
-        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-          <form className='modal' onSubmit={this.handleSubmitAuth}>
-            <div className='modal-row'>
-              <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
-              placeholder='Username' name="username" value={this.state.username}/>
-              {this.state.error && <div className='error'>Username must be unique</div>}
-              <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
-              placeholder='Password' name="password" value={this.state.password}/>
-              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
-            </div>
-          </form>
-        </div>
+        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)}/>}
       </div>
     );
   }

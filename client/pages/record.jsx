@@ -1,5 +1,6 @@
 import React from 'react';
 import Redirect from '../components/redirect';
+import AuthForm from '../components/auth-form';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -9,15 +10,10 @@ export default class Recording extends React.Component {
       audios: '',
       name: '',
       account: null,
-      submit: null,
-      username: '',
-      password: '',
-      error: ''
+      submit: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleChangeAuth = this.handleChangeAuth.bind(this);
-    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
 
   async componentDidMount() {
@@ -69,46 +65,17 @@ export default class Recording extends React.Component {
   }
 
   modal(event) {
-    if (this.state.account && event.target.className === 'modal') {
-      this.setState({ account: null });
-    } else if (!this.state.account) {
-      this.setState({ account: true });
+    if (this.state.account) {
+      return this.setState({ account: null });
     }
+    this.setState({ account: true });
   }
 
-  handleChangeAuth(event) {
-    const { name, value } = event.target;
-    if (this.state.error) {
-      this.setState({ error: '', [name]: value });
-    }
-    this.setState({ [name]: value });
-  }
-
-  handleSubmitAuth(event) {
-    event.preventDefault();
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
-      })
-    };
-    fetch('/api/users/', req)
-      .then(res => {
-        if (!res.ok) {
-          this.setState({ error: true });
-        } else if (res.ok) {
-          this.setState({ error: '', account: null, username: '', password: '' });
-        }
-      });
+  handleModalClose(event) {
+    this.setState({ account: null });
   }
 
   render() {
-    const error = this.state.error ? 'error-input' : '';
-    const view = this.state.account ? '' : 'hidden';
     if (this.state.submit === true) {
       return <Redirect to="" />;
     }
@@ -169,19 +136,7 @@ export default class Recording extends React.Component {
               <button type="submit" className='submit-button lucida-sans white cyan-background'>Submit</button>
             </div>
           </form>}
-          <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-            <form className='modal' onSubmit={this.handleSubmitAuth}>
-              <div className='modal-row'>
-                <h2 className='auth-header font-gray'>Sign-Up</h2>
-                <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
-                  placeholder='Username' name="username" value={this.state.username} />
-                {this.state.error && <div className='error'>Username must be unique</div>}
-                <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
-                  placeholder='Password' name="password" value={this.state.password} />
-                <button type="submit" className='submit-auth cyan-background white'>Submit</button>
-              </div>
-            </form>
-          </div>
+          {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
         </div>
       </div>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthForm from '../components/auth-form';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -6,13 +7,8 @@ export default class SoundButtonDetail extends React.Component {
     this.state = {
       current: null,
       playing: null,
-      account: null,
-      username: '',
-      password: '',
-      error: ''
+      account: null
     };
-    this.handleChangeAuth = this.handleChangeAuth.bind(this);
-    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
   }
 
   componentDidMount() {
@@ -41,49 +37,21 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   modal(event) {
-    if (this.state.account && event.target.className === 'modal') {
-      this.setState({ account: null });
-    } else if (!this.state.account) {
-      this.setState({ account: true });
+    if (this.state.account) {
+      this.stop(event);
+      return this.setState({ account: null });
     }
     this.stop(event);
+    this.setState({ account: true });
   }
 
-  handleChangeAuth(event) {
-    const { name, value } = event.target;
-    if (this.state.error) {
-      this.setState({ error: '', [name]: value });
-    }
-    this.setState({ [name]: value });
-  }
-
-  handleSubmitAuth(event) {
-    event.preventDefault();
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
-      })
-    };
-    fetch('/api/users/', req)
-      .then(res => {
-        if (!res.ok) {
-          this.setState({ error: true });
-        } else if (res.ok) {
-          this.setState({ error: '', account: null, username: '', password: '' });
-        }
-      });
+  handleModalClose(event) {
+    this.setState({ account: null });
   }
 
   render() {
     if (!this.state.current) return null;
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
-    const view = this.state.account ? '' : 'hidden';
-    const error = this.state.error ? 'error-input' : '';
     return (
       <div>
         <div>
@@ -119,19 +87,7 @@ export default class SoundButtonDetail extends React.Component {
             <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans w200px-h40px cyan-background border-none'>Add to Bookmarks</button>
           </div>
         </div>
-        <div onClick={event => this.modal(event)} className={`transparent lucida-sans ${view}`}>
-          <form className='modal' onSubmit={this.handleSubmitAuth}>
-            <div className='modal-row'>
-              <h2 className='auth-header font-gray'>Sign-Up</h2>
-              <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
-                placeholder='Username' name="username" value={this.state.username} />
-              {this.state.error && <div className='error'>Username must be unique</div>}
-              <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
-                placeholder='Password' name="password" value={this.state.password} />
-              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
-            </div>
-          </form>
-        </div>
+        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
       </div>
     );
   }
