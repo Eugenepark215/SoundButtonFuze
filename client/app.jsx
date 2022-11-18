@@ -62,9 +62,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, route } = this.state;
     const { handleSignIn } = this;
-    const contextValue = { user, handleSignIn };
+    const contextValue = { user, handleSignIn, route };
     return (
       <div>
         <AppContext.Provider value={contextValue}>
