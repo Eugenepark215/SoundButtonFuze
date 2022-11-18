@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthForm from '../components/auth-form';
+import AppContext from '../lib/app-context';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -69,12 +70,16 @@ export default class SoundButtonDetail extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <a href='#record'>
-                    <i onClick={event => this.stop(event)} className="fa-solid fa-microphone white" />
-                  </a>
+                  {this.context.user && <a onClick={event => this.stop(event)} href='#record'>
+                    <i className="fa-solid fa-microphone white" />
+                    </a>}
+                  {!this.context.user && <a onClick={event => this.modal(event)}>
+                    <i className="fa-solid fa-microphone white" />
+                    </a>}
                 </div>
                 <div className="column-third text-align-center">
-                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
+                  {!this.context.user && <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />}
+                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
                 </div>
               </div>
             </div>
@@ -92,3 +97,4 @@ export default class SoundButtonDetail extends React.Component {
     );
   }
 }
+SoundButtonDetail.contextType = AppContext;

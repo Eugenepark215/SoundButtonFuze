@@ -22,7 +22,6 @@ export default class App extends React.Component {
     this.state = {
       sounds: [],
       route: ParseRoute(window.location.hash),
-      isAuthorizing: '',
       user: ''
     };
     this.handleSignIn = this.handleSignIn.bind(this);
@@ -39,7 +38,7 @@ export default class App extends React.Component {
     });
     const token = window.localStorage.getItem('react-context-jwt');
     const user = token ? jwtDecode(token) : null;
-    this.setState({ user, isAuthorizing: false });
+    this.setState({ user });
   }
 
   handleSignIn(result) {
