@@ -7,6 +7,8 @@ const ClientError = require('./client-error');
 const uploadsMiddleware = require('./uploads-middleware');
 const path = require('path');
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
+const authorizationMiddleware = require('./auth-middleware');
 
 const app = express();
 app.use(express.json());
@@ -57,27 +59,7 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
-  const filename = req.file.filename;
-  const name = req.body.soundName;
-  if (!filename) {
-    throw new ClientError(400, 'does not exist');
-  }
-  const newUrl = path.join('/sounds', filename);
-  const sql = `
-  insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
-  values ($1, $2, 1, now())
-  returning "soundId"
-  `;
-  const params = [newUrl, name];
-  return db.query(sql, params)
-    .then(result => {
-      res.status(201).json(result.rows[0]);
-    })
-    .catch(err => next(err));
-});
-
-app.post('/api/users', (req, res, next) => {
+app.post('/api/users/sign-up', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and passwords are required fields');
@@ -95,6 +77,63 @@ app.post('/api/users', (req, res, next) => {
     }).then(result => {
       const [user] = result.rows;
       res.status(201).json(user);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/users/sign-in', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+    select "userId",
+           "hashedPassword"
+      from "users"
+     where "username" = $1
+  `;
+  const params = [username];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid login');
+      }
+      const { userId, hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+          const payload = { userId, username };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.json({ token, user: payload });
+        });
+    })
+    .catch(err => next(err));
+});
+
+app.use(authorizationMiddleware);
+app.use(uploadsMiddleware);
+
+app.post('/api/sounds', (req, res, next) => {
+  const userId = req.user.userId;
+  const filename = req.file.filename;
+  const name = req.body.soundName;
+  if (!filename) {
+    throw new ClientError(400, 'does not exist');
+  }
+  const newUrl = path.join('/sounds', filename);
+  const sql = `
+  insert into "sounds" ("fileUrl", "soundName" , "userId", "uploadedAt")
+  values ($1, $2, $3, now())
+  returning "soundId"
+  `;
+  const params = [newUrl, name, userId];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
     })
     .catch(err => next(err));
 });

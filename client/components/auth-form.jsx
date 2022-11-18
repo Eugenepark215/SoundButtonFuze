@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
@@ -7,10 +8,12 @@ export default class AuthForm extends React.Component {
       username: '',
       password: '',
       error: '',
-      account: ''
+      account: '',
+      signInOrsignUp: 'signIn'
     };
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
-    this.handleSubmitAuth = this.handleSubmitAuth.bind(this);
+    this.handleSubmitSignUp = this.handleSubmitSignUp.bind(this);
+    this.handleSubmitSignIn = this.handleSubmitSignIn.bind(this);
   }
 
   handleChangeAuth(event) {
@@ -21,7 +24,7 @@ export default class AuthForm extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmitAuth(event) {
+  handleSubmitSignUp(event) {
     event.preventDefault();
     const req = {
       method: 'POST',
@@ -33,13 +36,38 @@ export default class AuthForm extends React.Component {
         password: this.state.password
       })
     };
-    fetch('/api/users/', req)
+    fetch('/api/users/sign-up', req)
       .then(res => {
         if (!res.ok) {
           this.setState({ error: true });
-        } else if (res.ok) {
+        } else {
           this.setState({ error: '', account: '', username: '', password: '' });
           this.props.onClose();
+        }
+      });
+  }
+
+  handleSubmitSignIn(event) {
+    event.preventDefault();
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      })
+    };
+    fetch('/api/users/sign-in', req)
+      .then(res => res.json())
+      .then(data => {
+        if (data.user && data.token) {
+          this.context.handleSignIn(data);
+          this.setState({ error: '', account: '', username: '', passsword: '' });
+          this.props.onClose();
+        } else {
+          this.setState({ error: true });
         }
       });
   }
@@ -53,22 +81,38 @@ export default class AuthForm extends React.Component {
     }
   }
 
+  handleClick(event) {
+    if (this.state.signInOrsignUp === 'signIn') {
+      this.setState({ signInOrsignUp: 'signUp', error: '', username: '', passsword: '' });
+    } else if (this.state.signInOrsignUp === 'signUp') {
+      this.setState({ signInOrsignUp: 'signIn', error: '', username: '', passsword: '' });
+    }
+  }
+
   render() {
+    const typeOfError = this.state.signInOrsignUp === 'signIn' ? 'Invalid login' : 'Username must be unique';
     const error = this.state.error ? 'error-input' : '';
+    const signInOrsignUp = this.state.signInOrsignUp === 'signIn' ? this.handleSubmitSignIn : this.handleSubmitSignUp;
+    const signInOrsignUpHeader = this.state.signInOrsignUp === 'signIn' ? 'Sign-In' : 'Sign-Up';
+    const signInOrsignUpAnchor = this.state.signInOrsignUp === 'signIn' ? 'Sign-Up' : 'Sign-In';
     return (
       <div onClick={event => this.modal(event)} className='transparent lucida-sans'>
-        <form className='modal' onSubmit={this.handleSubmitAuth}>
+        <form className='modal' onSubmit={signInOrsignUp}>
           <div className='modal-row'>
-            <h2 className='auth-header font-gray'>Sign-Up</h2>
+            <h2 className='auth-header font-gray'>{signInOrsignUpHeader}</h2>
             <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
               placeholder='Username' name="username" value={this.state.username} />
-            {this.state.error && <div className='error'>Username must be unique</div>}
+            {this.state.error && <div className='error'>{typeOfError}</div>}
             <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
               placeholder='Password' name="password" value={this.state.password} />
-            <button type="submit" className='submit-auth cyan-background white'>Submit</button>
+            <div className='modal-anchor-submit display-flex'>
+              <a className='modal-anchor' onClick={event => this.handleClick(event)}>{signInOrsignUpAnchor}</a>
+              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
+            </div>
           </div>
         </form>
       </div>
     );
   }
 }
+AuthForm.contextType = AppContext;

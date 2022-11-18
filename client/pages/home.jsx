@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthForm from '../components/auth-form';
+import AppContext from '../lib/app-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -9,7 +10,6 @@ export default class Home extends React.Component {
       current: null,
       account: null
     };
-
   }
 
   componentDidMount() {
@@ -68,12 +68,16 @@ export default class Home extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <a onClick={event => this.audioPlay(event)} href='#record'>
+                  {this.context.user && <a onClick={event => this.audioPlay(event)} href='#record'>
                     <i className="fa-solid fa-microphone white" />
-                  </a>
+                  </a>}
+                  {!this.context.user && <a onClick={event => this.modalAudioPlay(event)}>
+                    <i className="fa-solid fa-microphone white" />
+                  </a>}
                 </div>
                 <div className="column-third text-align-center">
-                  <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />
+                  {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
+                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
                 </div>
               </div>
             </div>
@@ -99,5 +103,6 @@ export default class Home extends React.Component {
       </div>
     );
   }
-
 }
+
+Home.contextType = AppContext;

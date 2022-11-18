@@ -1,6 +1,7 @@
 import React from 'react';
 import Redirect from '../components/redirect';
 import AuthForm from '../components/auth-form';
+import AppContext from '../lib/app-context';
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -50,9 +51,14 @@ export default class Recording extends React.Component {
   handleSubmit(event) {
     const formData = new FormData();
     const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
+    const token = window.localStorage.getItem('react-context-jwt');
     formData.append('fileUrl', file);
     formData.append('soundName', this.state.name);
+    formData.append('userId', this.context.user.userId);
     const req = {
+      headers: {
+        'X-Access-Token': token
+      },
       method: 'POST',
       body: formData
     };
@@ -101,7 +107,8 @@ export default class Recording extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />
+                  {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
+                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
                 </div>
               </div>
             </div>
@@ -133,7 +140,7 @@ export default class Recording extends React.Component {
               </div>
             </div>
             <div className='submit-button-container'>
-              <button type="submit" className='submit-button lucida-sans white cyan-background'>Submit</button>
+              <button type='submit' className='submit-button lucida-sans white cyan-background'>Submit</button>
             </div>
           </form>}
           {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
@@ -142,3 +149,5 @@ export default class Recording extends React.Component {
     );
   }
 }
+
+Recording.contextType = AppContext;
