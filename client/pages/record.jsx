@@ -13,6 +13,7 @@ export default class Recording extends React.Component {
       account: null,
       submit: null
     };
+    this.myRef = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
   }
@@ -20,12 +21,56 @@ export default class Recording extends React.Component {
   async componentDidMount() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.mediaRecorder = new MediaRecorder(stream);
+    this.visualize(stream);
     this.chunks = [];
     this.mediaRecorder.ondataavailable = event => {
       if (event.data && event.data.size > 0) {
         this.chunks.push(event.data);
       }
     };
+  }
+
+  visualize(stream) {
+    const canvas = this.myRef.current;
+    const canvasCtx = canvas.getContext('2d');
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaStreamSource(stream);
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    source.connect(analyser);
+    draw();
+    function draw() {
+      const WIDTH = canvas.width;
+      const HEIGHT = canvas.height;
+
+      requestAnimationFrame(draw);
+
+      analyser.getByteTimeDomainData(dataArray);
+
+      canvasCtx.fillStyle = 'rgb(240, 240, 240)';
+      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.lineWidth = 2;
+      canvasCtx.strokeStyle = 'rgb(110, 223, 246)';
+      canvasCtx.beginPath();
+      const sliceWidth = WIDTH * 1.0 / bufferLength;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const v = dataArray[i] / 128.0;
+        const y = v * HEIGHT / 2;
+        if (i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+        x += sliceWidth;
+      }
+      canvasCtx.lineTo(canvas.width, canvas.height / 2);
+      canvasCtx.stroke();
+    }
   }
 
   start(event) {
@@ -49,6 +94,7 @@ export default class Recording extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const formData = new FormData();
     const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
     const token = window.localStorage.getItem('react-context-jwt');
@@ -62,8 +108,10 @@ export default class Recording extends React.Component {
       method: 'POST',
       body: formData
     };
-    fetch('/api/sounds', req);
-    this.setState({ submit: true });
+    fetch('/api/sounds', req)
+      .then(res => {
+        this.setState({ submit: true });
+      });
   }
 
   handleNameChange(event) {
@@ -83,8 +131,9 @@ export default class Recording extends React.Component {
 
   render() {
     if (this.state.submit === true) {
-      return <Redirect to="" />;
+      return <Redirect to="#" />;
     }
+    const something = !this.state.recordingStatus ? 'hidden' : ' ';
     return (
       <div>
         <div>
@@ -124,14 +173,15 @@ export default class Recording extends React.Component {
             {this.state.recordingStatus && <button onClick={event => this.stop(event)} className='single-button drop-shadow margin-top border-radius-50 border-none cyan-background'>
               <i className='icon-recording fa-solid fa-square red' />
             </button>}
+            <canvas ref={this.myRef} className={`${something}`}/>
           </div>
           <div className='audio-player-column justify-content-center display-flex'>
             <audio ref={a => {
               this.audio = a;
             }} />
-            {this.state.audios !== '' && <audio className='audio-player' src={this.state.audios} controls />}
+            {this.state.audios !== '' && !this.state.recordingStatus && <audio className='audio-player' src={this.state.audios} controls />}
           </div>
-          {this.state.audios && <form onSubmit={this.handleSubmit} className='justify-content-center display-flex flex-direction-column'>
+          {this.state.audios && !this.state.recordingStatus && <form onSubmit={this.handleSubmit} className='justify-content-center display-flex flex-direction-column'>
             <div className='record-input-container lucida-sans font-gray display-flex flex-direction-column'>
               <div className='display-flex flex-direction-column'>
                 <label className='record-input-label lucida-sans gray' >Sound Name</label>
