@@ -115,9 +115,10 @@ app.post('/api/users/sign-in', (req, res, next) => {
 });
 
 app.use(authorizationMiddleware);
+app.use(uploadsMiddleware);
 
-app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
-  const { userId } = req.user;
+app.post('/api/sounds', (req, res, next) => {
+  const userId = req.user.userId;
   const filename = req.file.filename;
   const name = req.body.soundName;
   if (!filename) {

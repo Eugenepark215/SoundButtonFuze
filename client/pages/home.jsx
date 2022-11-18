@@ -9,7 +9,6 @@ export default class Home extends React.Component {
       current: null,
       account: null
     };
-
   }
 
   componentDidMount() {
@@ -99,5 +98,4 @@ export default class Home extends React.Component {
       </div>
     );
   }
-
 }

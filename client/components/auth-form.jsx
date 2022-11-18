@@ -9,7 +9,6 @@ export default class AuthForm extends React.Component {
       password: '',
       error: '',
       account: '',
-      user: '',
       signInOrsignUp: 'signIn'
     };
     this.handleChangeAuth = this.handleChangeAuth.bind(this);
@@ -41,7 +40,7 @@ export default class AuthForm extends React.Component {
       .then(res => {
         if (!res.ok) {
           this.setState({ error: true });
-        } else if (res.ok) {
+        } else {
           this.setState({ error: '', account: '', username: '', password: '' });
           this.props.onClose();
         }
@@ -57,17 +56,18 @@ export default class AuthForm extends React.Component {
       },
       body: JSON.stringify({
         username: this.state.username,
-        passsword: this.state.password
+        password: this.state.password
       })
     };
     fetch('/api/users/sign-in', req)
-      .then(res => {
-        if (!res.ok) {
-          this.setState({ error: true });
-        } else if (res.user && res.token) {
-          this.setState({ error: '', account: '', username: '', passsword: '', user: res });
-          this.context.handleSignIn();
+      .then(res => res.json())
+      .then(data => {
+        if (data.user && data.token) {
+          this.context.handleSignIn(data);
+          this.setState({ error: '', account: '', username: '', passsword: '' });
           this.props.onClose();
+        } else {
+          this.setState({ error: true });
         }
       });
   }
@@ -83,13 +83,14 @@ export default class AuthForm extends React.Component {
 
   handleClick(event) {
     if (this.state.signInOrsignUp === 'signIn') {
-      this.setState({ signInOrsignUp: 'signUp' });
+      this.setState({ signInOrsignUp: 'signUp', error: '', username: '', passsword: '' });
     } else if (this.state.signInOrsignUp === 'signUp') {
-      this.setState({ signInOrsignUp: 'signIn' });
+      this.setState({ signInOrsignUp: 'signIn', error: '', username: '', passsword: '' });
     }
   }
 
   render() {
+    const typeOfError = this.state.signInOrsignUp === 'signIn' ? 'Invalid login' : 'Username must be unique';
     const error = this.state.error ? 'error-input' : '';
     const signInOrsignUp = this.state.signInOrsignUp === 'signIn' ? this.handleSubmitSignIn : this.handleSubmitSignUp;
     const signInOrsignUpHeader = this.state.signInOrsignUp === 'signIn' ? 'Sign-In' : 'Sign-Up';
@@ -101,11 +102,13 @@ export default class AuthForm extends React.Component {
             <h2 className='auth-header font-gray'>{signInOrsignUpHeader}</h2>
             <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
               placeholder='Username' name="username" value={this.state.username} />
-            {this.state.error && <div className='error'>Username must be unique</div>}
+            {this.state.error && <div className='error'>{typeOfError}</div>}
             <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
               placeholder='Password' name="password" value={this.state.password} />
-            <a onClick={event => this.handleClick(event)}>{signInOrsignUpAnchor}</a>
-            <button type="submit" className='submit-auth cyan-background white'>Submit</button>
+            <div className='modal-anchor-submit display-flex'>
+              <a className='modal-anchor' onClick={event => this.handleClick(event)}>{signInOrsignUpAnchor}</a>
+              <button type="submit" className='submit-auth cyan-background white'>Submit</button>
+            </div>
           </div>
         </form>
       </div>
