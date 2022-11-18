@@ -13,6 +13,7 @@ export default class Recording extends React.Component {
       account: null,
       submit: null
     };
+    this.myRef = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
   }
@@ -30,7 +31,7 @@ export default class Recording extends React.Component {
   }
 
   visualize(stream) {
-    const canvas = document.querySelector('.visualizer');
+    const canvas = this.myRef.current;
     const canvasCtx = canvas.getContext('2d');
     const audioCtx = new AudioContext();
     const source = audioCtx.createMediaStreamSource(stream);
@@ -172,7 +173,7 @@ export default class Recording extends React.Component {
             {this.state.recordingStatus && <button onClick={event => this.stop(event)} className='single-button drop-shadow margin-top border-radius-50 border-none cyan-background'>
               <i className='icon-recording fa-solid fa-square red' />
             </button>}
-            <canvas className={`visualizer ${something}`}/>
+            <canvas ref={this.myRef} className={`${something}`}/>
           </div>
           <div className='audio-player-column justify-content-center display-flex'>
             <audio ref={a => {
