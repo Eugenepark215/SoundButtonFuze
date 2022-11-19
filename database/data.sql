@@ -13,10 +13,13 @@ values (1, 'ahyoawho-rezero', '/sounds/ahyoawhoa.mp3', now()),
         (1, 'chewbacca','/sounds/chewbacca.mp3', now()),
         (1, 'coochieman','/sounds/coochieman.mp3', now()),
        (1, 'damn-son-whered-you-find-this', '/sounds/damn-son-whered-you-find-this.mp3', now()),
+       (1, 'dramaticSFX', '/sounds/dramatic-sfx.mp3', now()),
        (1, 'falconpunch','/sounds/falconpunch.mp3', now()),
        (1, 'fbi-open-up-sfx','/sounds/fbi-open-up-sfx.mp3', now()),
        (1, 'fortnite-default-dance-bass-boosted','/sounds/fortnite-default-dance-bass-boosted.mp3', now()),
+       (1, 'music-from-tims-band', '/sounds/TimMusic.mp3', now()),
         (1, 'omaewa-mou-shindereriru-NANI?','sounds/omaewamoushinderiru.mp3', now()),
+        (1, 'Sound-only-cool-swaggy-people-can-press', '/sounds/Intro.mp3', now()),
        (1, 'you-kinda-smell-like-a-baka','/sounds/you-kinda-smell-like-a-baka.mp3', now()),
        (1, 'yeet','/sounds/yeet.mp3', now());
 

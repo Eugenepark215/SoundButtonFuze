@@ -40,9 +40,18 @@ export default class AuthForm extends React.Component {
       .then(res => {
         if (!res.ok) {
           this.setState({ error: true });
-        } else {
-          this.setState({ error: '', account: '', username: '', password: '' });
-          this.props.onClose();
+        } else if (res.ok) {
+          fetch('/api/users/sign-in', req)
+            .then(res => res.json())
+            .then(data => {
+              if (data.user && data.token) {
+                this.context.handleSignIn(data);
+                this.setState({ error: '', account: '', username: '', passsword: '' });
+                this.props.onClose();
+              } else {
+                this.setState({ error: true });
+              }
+            });
         }
       });
   }
