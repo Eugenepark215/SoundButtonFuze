@@ -19,3 +19,14 @@ values (1, 'ahyoawho-rezero', '/sounds/ahyoawhoa.mp3', now()),
         (1, 'omaewa-mou-shindereriru-NANI?','sounds/omaewamoushinderiru.mp3', now()),
        (1, 'you-kinda-smell-like-a-baka','/sounds/you-kinda-smell-like-a-baka.mp3', now()),
        (1, 'yeet','/sounds/yeet.mp3', now());
+
+insert into "bookmarks" ("userId", "soundId")
+values ('1', 1),
+        ('1', 2),
+        ('1', 3),
+        ('1', 4),
+        ('1', 5),
+        ('1', 6),
+        ('1', 7),
+        ('1', 8),
+        ('1', 9)

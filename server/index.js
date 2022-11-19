@@ -114,6 +114,23 @@ app.post('/api/users/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/bookmarks', (req, res, next) => {
+  // if (!userId) {
+  //   throw new ClientError(400, 'does not exist');
+  // }
+  const sql = `
+  select "soundId"
+  from "bookmarks"
+  where "userId" = $1
+  `;
+  const params = [1];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.use(authorizationMiddleware);
 app.use(uploadsMiddleware);
 
