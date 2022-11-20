@@ -115,9 +115,6 @@ app.post('/api/users/sign-in', (req, res, next) => {
 });
 
 app.get('/api/bookmarks', (req, res, next) => {
-  // if (!userId) {
-  //   throw new ClientError(400, 'does not exist');
-  // }
   const sql = `
   select "b"."soundId",
           "s"."soundName",
@@ -126,12 +123,6 @@ app.get('/api/bookmarks', (req, res, next) => {
   join "sounds" as "s" using ("soundId")
   where "b"."userId" = $1
   `;
-  // const sql2nd = `
-  // select "soundName",
-  // "fileUrl"
-  // from "sounds"
-  // where "soundId" = $1
-  // `;
   const params = [1];
   db.query(sql, params)
     .then(result => {

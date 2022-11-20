@@ -157,7 +157,10 @@ export default class Recording extends React.Component {
                 </div>
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
+                  {this.context.user &&
+                    <a href='#bookmark'>
+                      <i className="fa-solid fa-bookmark white" />
+                      </a>}
                 </div>
               </div>
             </div>

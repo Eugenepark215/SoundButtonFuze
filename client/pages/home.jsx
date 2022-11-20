@@ -71,13 +71,14 @@ export default class Home extends React.Component {
                   {this.context.user && <a onClick={event => this.audioPlay(event)} href='#record'>
                     <i className="fa-solid fa-microphone white" />
                   </a>}
-                  {!this.context.user && <a onClick={event => this.modalAudioPlay(event)}>
-                    <i className="fa-solid fa-microphone white" />
-                  </a>}
+                  {!this.context.user && <i className="fa-solid fa-microphone white" onClick={event => this.modalAudioPlay(event)} />}
                 </div>
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
+                  {this.context.user &&
+                  <a onClick={event => this.audioPlay(event)} href='#bookmark'>
+                    <i className="fa-solid fa-bookmark white" />
+                  </a>}
                 </div>
               </div>
             </div>
