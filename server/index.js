@@ -114,6 +114,23 @@ app.post('/api/users/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/bookmarks', (req, res, next) => {
+  const sql = `
+  select "b"."soundId",
+          "s"."soundName",
+          "s"."fileUrl"
+  from "bookmarks" as "b"
+  join "sounds" as "s" using ("soundId")
+  where "b"."userId" = $1
+  `;
+  const params = [1];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.use(authorizationMiddleware);
 app.use(uploadsMiddleware);
 

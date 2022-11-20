@@ -113,6 +113,10 @@ a {
   height: 70px;
 }
 
+.sound-button:hover {
+  background-color: rgb(110 223 246);
+}
+
 .audio-player {
   width: 200px;
 }

@@ -1,19 +1,15 @@
 import React from 'react';
-import AuthForm from '../components/auth-form';
-import AppContext from '../lib/app-context';
 
-export default class Home extends React.Component {
+export default class Bookmark extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: [],
-      current: null,
-      account: null
+      sounds: []
     };
   }
 
   componentDidMount() {
-    fetch('/api/sounds')
+    fetch('/api/bookmarks')
       .then(res => res.json())
       .then(sound => {
         this.setState({ sounds: sound });
@@ -34,22 +30,6 @@ export default class Home extends React.Component {
     }
   }
 
-  modal(event) {
-    if (this.state.account) {
-      return this.setState({ account: null });
-    }
-    this.setState({ account: true });
-  }
-
-  modalAudioPlay(event) {
-    this.audioPlay(event);
-    this.modal(event);
-  }
-
-  handleModalClose(event) {
-    this.setState({ account: null });
-  }
-
   render() {
     return (
       <div>
@@ -57,7 +37,7 @@ export default class Home extends React.Component {
           <div className="container drop-shadow">
             <div className="row cyan-background">
               <div className="nav-header-column column-half">
-                <a href='#' onClick={event => this.audioPlay(event)} className='text-decoration-none'>
+                <a onClick={event => this.audioPlay(event)} href='#' className='text-decoration-none'>
                   <h2 className='nav-bar-header white lucida-sans'>SoundButtonFuze</h2>
                 </a>
               </div>
@@ -68,24 +48,19 @@ export default class Home extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  {this.context.user && <a onClick={event => this.audioPlay(event)} href='#record'>
+                  <a onClick={event => this.audioPlay(event)} href='#record'>
                     <i className="fa-solid fa-microphone white" />
-                  </a>}
-                  {!this.context.user && <i className="fa-solid fa-microphone white" onClick={event => this.modalAudioPlay(event)} />}
+                  </a>
                 </div>
                 <div className="column-third text-align-center">
-                  {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user &&
-                  <a onClick={event => this.audioPlay(event)} href='#bookmark'>
-                    <i className="fa-solid fa-bookmark white" />
-                  </a>}
+                  <i onClick={event => this.audioPlay(event)} className="fa-solid fa-bookmark white" />
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <h2 className='sound-button-header text-align-center lucida-sans font-gray'>Sound Buttons</h2>
+          <h2 className='text-align-center lucida-sans font-gray'>Bookmarks</h2>
         </div>
         <div className='button-container display-flex flex-wrap'>
           {this.state.sounds.map((sound, index) => {
@@ -100,10 +75,7 @@ export default class Home extends React.Component {
             );
           })}
         </div>
-        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)}/>}
       </div>
     );
   }
 }
-
-Home.contextType = AppContext;

@@ -5,6 +5,7 @@ import SoundButtonDetail from './pages/sound-button-detail';
 import Recording from './pages/record';
 import jwtDecode from 'jwt-decode';
 import AppContext from './lib/app-context';
+import Bookmark from './pages/bookmark';
 
 const colors = [
   'red-background',
@@ -58,6 +59,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'record') {
       return <Recording />;
+    }
+    if (route.path === 'bookmark') {
+      return <Bookmark colors={colors}/>;
     }
   }
 
