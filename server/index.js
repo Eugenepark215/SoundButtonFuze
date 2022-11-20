@@ -114,33 +114,31 @@ app.post('/api/users/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// app.get('/api/bookmarks', (req, res, next) => {
-//   // if (!userId) {
-//   //   throw new ClientError(400, 'does not exist');
-//   // }
-//   const sql = `
-//   select "soundId"
-//   from "bookmarks"
-//   where "userId" = $1
-//   `;
-//   const sql2nd = `
-//   select "soundName",
-//   "fileUrl"
-//   from "sounds"
-//   where "soundId" = $1
-//   `;
-//   const params = [1];
-//   db.query(sql, params)
-//     .then(result => {
-//       for (let i = 0; i < result.rows.length; i++) {
-//         const params2nd = [result.rows[i].soundId];
-//         db.query(sql2nd, params2nd)
-//           .then(data => {
-//             res.json(data.rows);
-//           });
-//       }
-//     });
-// });
+app.get('/api/bookmarks', (req, res, next) => {
+  // if (!userId) {
+  //   throw new ClientError(400, 'does not exist');
+  // }
+  const sql = `
+  select "b"."soundId",
+          "s"."soundName",
+          "s"."fileUrl"
+  from "bookmarks" as "b"
+  join "sounds" as "s" using ("soundId")
+  where "b"."userId" = $1
+  `;
+  // const sql2nd = `
+  // select "soundName",
+  // "fileUrl"
+  // from "sounds"
+  // where "soundId" = $1
+  // `;
+  const params = [1];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows);
+    })
+    .catch(err => next(err));
+});
 
 app.use(authorizationMiddleware);
 app.use(uploadsMiddleware);
