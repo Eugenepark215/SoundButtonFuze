@@ -59,7 +59,7 @@ app.get('/api/sounds/:soundId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/users/sign-up', (req, res, next) => {
+app.post('/api/users/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and passwords are required fields');
@@ -81,7 +81,7 @@ app.post('/api/users/sign-up', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/users/sign-in', (req, res, next) => {
+app.post('/api/users/sign-in', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(401, 'invalid login');
@@ -134,7 +134,7 @@ app.get('/api/bookmarks', (req, res, next) => {
 app.use(authorizationMiddleware);
 app.use(uploadsMiddleware);
 
-app.post('/api/sounds', (req, res, next) => {
+app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
   const userId = req.user.userId;
   const filename = req.file.filename;
   const name = req.body.soundName;
