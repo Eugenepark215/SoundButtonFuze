@@ -20,8 +20,8 @@ export default class Recording extends React.Component {
 
   async componentDidMount() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    this.stream = stream;
     this.mediaRecorder = new MediaRecorder(stream);
-    this.visualize(stream);
     this.chunks = [];
     this.mediaRecorder.ondataavailable = event => {
       if (event.data && event.data.size > 0) {
@@ -76,12 +76,15 @@ export default class Recording extends React.Component {
   start(event) {
     event.preventDefault();
     this.mediaRecorder.start(10);
+    this.visualize(this.stream);
     this.setState({ recordingStatus: true });
   }
 
   stop(event) {
     event.preventDefault();
-    this.mediaRecorder.stop();
+    this.stream.getAudioTracks().forEach(track => {
+      track.stop();
+    });
     this.setState({ recordingStatus: false });
     this.playAudio();
   }
@@ -176,7 +179,7 @@ export default class Recording extends React.Component {
             {this.state.recordingStatus && <button onClick={event => this.stop(event)} className='single-button drop-shadow margin-top border-radius-50 border-none cyan-background'>
               <i className='icon-recording fa-solid fa-square red' />
             </button>}
-            <canvas ref={this.myRef} className={`${something}`}/>
+            <canvas ref={this.myRef} className={something}/>
           </div>
           <div className='audio-player-column justify-content-center display-flex'>
             <audio ref={a => {
