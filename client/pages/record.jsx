@@ -99,7 +99,7 @@ export default class Recording extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mp3' });
+    const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mpeg' });
     const token = window.localStorage.getItem('react-context-jwt');
     formData.append('fileUrl', file);
     formData.append('soundName', this.state.name);
