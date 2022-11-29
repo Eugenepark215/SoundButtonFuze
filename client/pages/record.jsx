@@ -2,6 +2,7 @@ import React from 'react';
 import Redirect from '../components/redirect';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
+const lamejs = require('lamejs');
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -22,10 +23,27 @@ export default class Recording extends React.Component {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.stream = stream;
     this.mediaRecorder = new MediaRecorder(stream);
+    this.mp3Data = [];
     this.chunks = [];
+    const mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128);
     this.mediaRecorder.ondataavailable = event => {
       if (event.data && event.data.size > 0) {
-        this.chunks.push(event.data);
+        const samples = new Int16Array(44100);
+        const sampleBlockSize = 1152;
+
+        const mp3Data = [];
+        for (let i = 0; i < samples.length; i += sampleBlockSize) {
+          const sampleChunk = samples.subarray(i, i + sampleBlockSize);
+          const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+          if (mp3buf.length > 0) {
+            mp3Data.push(mp3buf);
+          }
+        }
+        const mp3buf = mp3encoder.flush();
+
+        if (mp3buf.length > 0) {
+          mp3Data.push(new Int8Array(mp3buf));
+        }
       }
     };
   }
@@ -90,7 +108,7 @@ export default class Recording extends React.Component {
   }
 
   playAudio() {
-    const blob = new Blob(this.chunks, { type: 'audio/mp3' });
+    const blob = new Blob(this.mp3Data, { type: 'audio/mp3' });
     const audioURL = window.URL.createObjectURL(blob);
     const audios = audioURL;
     this.setState({ audios });
@@ -99,7 +117,7 @@ export default class Recording extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    const file = new File(this.chunks, 'sound.mp3', { type: 'audio/mpeg' });
+    const file = new File(this.mp3Data, 'sound.mp3', { type: 'audio/mp3' });
     const token = window.localStorage.getItem('react-context-jwt');
     formData.append('fileUrl', file);
     formData.append('soundName', this.state.name);
