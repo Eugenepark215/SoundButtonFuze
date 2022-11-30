@@ -21,7 +21,6 @@ export default class Recording extends React.Component {
   async componentDidMount() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.stream = stream;
-    this.mediaRecorder = new MediaRecorder(stream);
     const recorder = new MicRecorder({ bitRate: 128 });
     this.recorder = recorder;
   }
@@ -87,9 +86,6 @@ export default class Recording extends React.Component {
       const audioURL = window.URL.createObjectURL(file);
       const audios = audioURL;
       this.setState({ audios });
-    });
-    this.stream.getAudioTracks().forEach(track => {
-      track.stop();
     });
     this.setState({ recordingStatus: false });
   }
