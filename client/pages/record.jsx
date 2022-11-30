@@ -72,7 +72,7 @@ export default class Recording extends React.Component {
 
   start(event) {
     event.preventDefault();
-    this.recorder.start(10);
+    this.recorder.start();
     this.visualize(this.stream);
     this.setState({ recordingStatus: true });
   }
@@ -84,6 +84,7 @@ export default class Recording extends React.Component {
         type: blob.type,
         lastModified: Date.now()
       });
+      this.file = file;
       const audioURL = window.URL.createObjectURL(file);
       const audios = audioURL;
       this.setState({ audios });
@@ -97,9 +98,8 @@ export default class Recording extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    const file = new File(this.mp3Data, 'sound.mp3', { type: 'audio/mp3' });
     const token = window.localStorage.getItem('react-context-jwt');
-    formData.append('fileUrl', file);
+    formData.append('fileUrl', this.file);
     formData.append('soundName', this.state.name);
     formData.append('userId', this.context.user.userId);
     const req = {
