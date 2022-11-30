@@ -1,6 +1,5 @@
 import React from 'react';
 import Redirect from '../components/redirect';
-import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 const MicRecorder = require('mic-recorder-to-mp3');
 
@@ -95,6 +94,12 @@ export default class Recording extends React.Component {
     this.setState({ recordingStatus: false });
   }
 
+  stopMic(event) {
+    this.stream.getAudioTracks().forEach(track => {
+      track.stop();
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
@@ -119,17 +124,6 @@ export default class Recording extends React.Component {
     this.setState({ name: event.target.value });
   }
 
-  modal(event) {
-    if (this.state.account) {
-      return this.setState({ account: null });
-    }
-    this.setState({ account: true });
-  }
-
-  handleModalClose(event) {
-    this.setState({ account: null });
-  }
-
   render() {
     if (this.state.submit === true) {
       return <Redirect to="#" />;
@@ -141,27 +135,25 @@ export default class Recording extends React.Component {
           <div className="container drop-shadow">
             <div className="row cyan-background">
               <div className="nav-header-column column-half">
-                <a href='#' className='text-decoration-none'>
+                <a href='#' className='text-decoration-none' onClick={event => this.stopMic(event)}>
                   <h2 className='nav-bar-header white lucida-sans'>SoundButtonFuze</h2>
                 </a>
               </div>
               <div className="icon-container row align-center justify-content-center">
                 <div className="column-third text-align-center">
-                  <a href='#'>
+                  <a href='#' onClick={event => this.stopMic(event)}>
                     <i className="fa-solid fa-house white" />
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <a href='#record'>
+                  <a href='#record' onClick={event => this.stopMic(event)}>
                     <i className="fa-solid fa-microphone white" />
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user &&
-                    <a href='#bookmark'>
-                      <i className="fa-solid fa-bookmark white" />
-                      </a>}
+                  <a href='#bookmark' onClick={event => this.stopMic(event)}>
+                    <i className="fa-solid fa-bookmark white" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -197,7 +189,6 @@ export default class Recording extends React.Component {
               <button type='submit' className='submit-button lucida-sans white cyan-background'>Submit</button>
             </div>
           </form>}
-          {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
         </div>
       </div>
     );
