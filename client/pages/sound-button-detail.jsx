@@ -20,7 +20,7 @@ export default class SoundButtonDetail extends React.Component {
     fetch(`api/sounds/${this.props.soundId}`)
       .then(res => res.json())
       .then(sound => {
-        this.setState({ current: sound, loading: false });
+        this.setState({ current: sound });
       })
       .catch(err => {
         console.error(err);
@@ -59,7 +59,7 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   render() {
-    if (!this.state.current) return null;
+    if (!this.state.current) return <LoadSpinner />;
     if (this.state.error === true) {
       return <ConnectionError />;
     }
@@ -90,7 +90,9 @@ export default class SoundButtonDetail extends React.Component {
                 </div>
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
+                  {this.context.user && <a onClick={event => this.stop(event)} href='#bookmark'>
+                    <i className="fa-solid fa-bookmark white" />
+                    </a>}
                 </div>
               </div>
             </div>
@@ -104,7 +106,6 @@ export default class SoundButtonDetail extends React.Component {
           </div>
         </div>
         {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
-        {this.state.loading && <LoadSpinner/>}
       </div>
     );
   }
