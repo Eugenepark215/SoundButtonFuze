@@ -5,8 +5,8 @@ export default class AuthForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: 'demo',
+      password: 'demo',
       error: '',
       account: '',
       signInOrsignUp: 'signIn'
