@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
+import ConnectionError from '../components/connection-error';
+import LoadSpinner from '../components/load-spinner';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -8,13 +10,21 @@ export default class SoundButtonDetail extends React.Component {
     this.state = {
       current: null,
       playing: null,
-      account: null
+      account: null,
+      error: false,
+      loading: true
     };
   }
 
   componentDidMount() {
     fetch(`api/sounds/${this.props.soundId}`)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          this.setState({ error: true });
+        }
+      })
       .then(sound => {
         this.setState({ current: sound });
       });
@@ -51,7 +61,10 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   render() {
-    if (!this.state.current) return null;
+    if (!this.state.current) return <LoadSpinner />;
+    if (this.state.error === true) {
+      return <ConnectionError />;
+    }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
       <div>
@@ -79,7 +92,9 @@ export default class SoundButtonDetail extends React.Component {
                 </div>
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user && <i className="fa-solid fa-bookmark white" />}
+                  {this.context.user && <a onClick={event => this.stop(event)} href='#bookmark'>
+                    <i className="fa-solid fa-bookmark white" />
+                    </a>}
                 </div>
               </div>
             </div>

@@ -33,6 +33,10 @@ export default class App extends React.Component {
       .then(res => res.json())
       .then(sound => {
         this.setState({ sounds: sound });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ error: true });
       });
     window.addEventListener('hashchange', () => {
       this.setState({ route: ParseRoute(window.location.hash) });
@@ -75,7 +79,6 @@ export default class App extends React.Component {
           {this.renderPage()}
         </AppContext.Provider>
       </div>
-
     );
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
+import ConnectionError from '../components/connection-error';
+import LoadSpinner from '../components/load-spinner';
 const MicRecorder = require('mic-recorder-to-mp3');
 
 export default class Recording extends React.Component {
@@ -11,7 +13,9 @@ export default class Recording extends React.Component {
       audios: '',
       name: '',
       account: null,
-      submit: null
+      submit: null,
+      error: false,
+      loading: true
     };
     this.myRef = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,6 +27,7 @@ export default class Recording extends React.Component {
     this.stream = stream;
     const recorder = new MicRecorder({ bitRate: 128 });
     this.recorder = recorder;
+    this.setState({ loading: false });
   }
 
   visualize(stream) {
@@ -112,6 +117,9 @@ export default class Recording extends React.Component {
     };
     fetch('/api/sounds', req)
       .then(res => {
+        if (!res.ok) {
+          this.setState({ error: true });
+        }
         this.setState({ submit: true });
       });
   }
@@ -123,6 +131,9 @@ export default class Recording extends React.Component {
   render() {
     if (this.state.submit === true) {
       return <Redirect to="#" />;
+    }
+    if (this.state.error === true) {
+      return <ConnectionError />;
     }
     const something = !this.state.recordingStatus ? 'hidden' : ' ';
     return (
@@ -186,6 +197,7 @@ export default class Recording extends React.Component {
             </div>
           </form>}
         </div>
+        {this.state.loading && <LoadSpinner />}
       </div>
     );
   }

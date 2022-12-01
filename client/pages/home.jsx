@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
+import LoadSpinner from '../components/load-spinner';
+import ConnectionError from '../components/connection-error';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -8,15 +10,23 @@ export default class Home extends React.Component {
     this.state = {
       sounds: [],
       current: null,
-      account: null
+      account: null,
+      loading: true,
+      error: false
     };
   }
 
   componentDidMount() {
     fetch('/api/sounds')
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          this.setState({ error: true });
+        }
+      })
       .then(sound => {
-        this.setState({ sounds: sound });
+        this.setState({ sounds: sound, loading: false });
       });
   }
 
@@ -51,6 +61,9 @@ export default class Home extends React.Component {
   }
 
   render() {
+    if (this.state.error === true) {
+      return <ConnectionError />;
+    }
     return (
       <div>
         <div>
@@ -101,6 +114,7 @@ export default class Home extends React.Component {
           })}
         </div>
         {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)}/>}
+        {this.state.loading && <LoadSpinner />}
       </div>
     );
   }
