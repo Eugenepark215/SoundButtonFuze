@@ -18,13 +18,15 @@ export default class SoundButtonDetail extends React.Component {
 
   componentDidMount() {
     fetch(`api/sounds/${this.props.soundId}`)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          this.setState({ error: true });
+        }
+      })
       .then(sound => {
         this.setState({ current: sound });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ error: true });
       });
   }
 

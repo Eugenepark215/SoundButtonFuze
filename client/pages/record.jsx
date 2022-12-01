@@ -117,7 +117,7 @@ export default class Recording extends React.Component {
     };
     fetch('/api/sounds', req)
       .then(res => {
-        if (!res.json()) {
+        if (!res.ok) {
           this.setState({ error: true });
         }
         this.setState({ submit: true });

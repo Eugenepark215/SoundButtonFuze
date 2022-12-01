@@ -18,13 +18,15 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     fetch('/api/sounds')
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          this.setState({ error: true });
+        }
+      })
       .then(sound => {
         this.setState({ sounds: sound, loading: false });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ error: true });
       });
   }
 
