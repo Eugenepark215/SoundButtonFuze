@@ -1,10 +1,14 @@
 import React from 'react';
+import LoadSpinner from '../components/load-spinner';
+import ConnectionError from '../components/connection-error';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sounds: []
+      sounds: [],
+      error: false,
+      loading: true
     };
   }
 
@@ -12,7 +16,11 @@ export default class Bookmark extends React.Component {
     fetch('/api/bookmarks')
       .then(res => res.json())
       .then(sound => {
-        this.setState({ sounds: sound });
+        this.setState({ sounds: sound, loading: false });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ error: true });
       });
   }
 
@@ -31,6 +39,9 @@ export default class Bookmark extends React.Component {
   }
 
   render() {
+    if (this.state.error === true) {
+      return <ConnectionError />;
+    }
     return (
       <div>
         <div>
@@ -75,6 +86,7 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
+        {this.state.loading && <LoadSpinner />}
       </div>
     );
   }

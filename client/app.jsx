@@ -6,7 +6,6 @@ import Recording from './pages/record';
 import jwtDecode from 'jwt-decode';
 import AppContext from './lib/app-context';
 import Bookmark from './pages/bookmark';
-import ConnectionError from '../client/components/connection-error';
 
 const colors = [
   'red-background',
@@ -24,22 +23,20 @@ export default class App extends React.Component {
     this.state = {
       sounds: [],
       route: ParseRoute(window.location.hash),
-      user: '',
-      error: false,
-      loading: true
+      user: ''
     };
     this.handleSignIn = this.handleSignIn.bind(this);
   }
 
   componentDidMount() {
     fetch('/api/sounds')
-      .then(res => {
-        if (!res.json()) {
-          this.setState({ error: true });
-        }
-      })
+      .then(res => res.json())
       .then(sound => {
-        this.setState({ sounds: sound, loading: false });
+        this.setState({ sounds: sound });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ error: true });
       });
     window.addEventListener('hashchange', () => {
       this.setState({ route: ParseRoute(window.location.hash) });
@@ -57,10 +54,6 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-
-    if (this.state.error === true) {
-      return <ConnectionError />;
-    }
     if (route.path === '') {
       return <Home colors = {colors} />;
     }
@@ -85,21 +78,6 @@ export default class App extends React.Component {
         <AppContext.Provider value={contextValue}>
           {this.renderPage()}
         </AppContext.Provider>
-        {this.state.loading &&
-          <div className='lds-spinner'>
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-          </div>}
       </div>
     );
   }

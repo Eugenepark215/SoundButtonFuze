@@ -301,7 +301,7 @@ a {
   width: 12px;
   height: 32px;
   border-radius: 20%;
-  background: rgb(110 223 246);
+  background: cyan;
 }
 
 .lds-spinner div:nth-child(1) {
@@ -444,7 +444,6 @@ a {
     width: 24px;
     height: 64px;
     border-radius: 20%;
-    background: rgb(110 223 246);
   }
 }
 

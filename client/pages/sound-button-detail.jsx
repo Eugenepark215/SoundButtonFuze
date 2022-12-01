@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
+import ConnectionError from '../components/connection-error';
+import LoadSpinner from '../components/load-spinner';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -8,7 +10,9 @@ export default class SoundButtonDetail extends React.Component {
     this.state = {
       current: null,
       playing: null,
-      account: null
+      account: null,
+      error: false,
+      loading: true
     };
   }
 
@@ -16,7 +20,11 @@ export default class SoundButtonDetail extends React.Component {
     fetch(`api/sounds/${this.props.soundId}`)
       .then(res => res.json())
       .then(sound => {
-        this.setState({ current: sound });
+        this.setState({ current: sound, loading: false });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ error: true });
       });
   }
 
@@ -52,6 +60,9 @@ export default class SoundButtonDetail extends React.Component {
 
   render() {
     if (!this.state.current) return null;
+    if (this.state.error === true) {
+      return <ConnectionError />;
+    }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
       <div>
@@ -93,6 +104,7 @@ export default class SoundButtonDetail extends React.Component {
           </div>
         </div>
         {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
+        {this.state.loading && <LoadSpinner/>}
       </div>
     );
   }
