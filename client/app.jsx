@@ -74,6 +74,20 @@ export default class App extends React.Component {
         <AppContext.Provider value={contextValue}>
           {this.renderPage()}
         </AppContext.Provider>
+        <div className="lds-spinner">
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
       </div>
 
     );
