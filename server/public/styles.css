@@ -463,6 +463,14 @@ a {
   .lds-spinner {
     position: absolute;
     top: 30%;
+    left: 37%;
+  }
+}
+
+@media screen and (min-width: 1350px) {
+  .lds-spinner {
+    position: absolute;
+    top: 30%;
     left: 42%;
   }
 }
