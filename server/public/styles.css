@@ -426,7 +426,7 @@ a {
   .lds-spinner {
     position: absolute;
     top: 30%;
-    left: 35%;
+    left: 30%;
   }
 
   .lds-spinner div {
@@ -444,6 +444,14 @@ a {
     width: 24px;
     height: 64px;
     border-radius: 20%;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .lds-spinner {
+    position: absolute;
+    top: 30%;
+    left: 33%;
   }
 }
 
@@ -468,6 +476,14 @@ a {
 }
 
 @media screen and (min-width: 1350px) {
+  .lds-spinner {
+    position: absolute;
+    top: 30%;
+    left: 39%;
+  }
+}
+
+@media screen and (min-width: 1500px) {
   .lds-spinner {
     position: absolute;
     top: 30%;
