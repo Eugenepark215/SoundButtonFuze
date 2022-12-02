@@ -97,12 +97,6 @@ Try the application live at https://sound-button-fuze.eugenepark.dev/
     sudo service postgresql start
     ```
 
-8. Open the database. Once PostgreSQL starts you can view the database by opening http://localhost:8081 in your browser.
-
-    ```shell
-    pgweb --db=(value of TOKEN_SECRET)
-    ```
-
 8. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
 
     ```shell
