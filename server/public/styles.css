@@ -51,11 +51,6 @@ i {
   height: 175px;
 }
 
-.w200px-h40px {
-  width: 200px;
-  height: 40px;
-}
-
 .border-radius-50 {
   border-radius: 50%;
 }
@@ -106,6 +101,8 @@ a {
 
 .add-to-bookmarks {
   font-size: larger;
+  width: 200px;
+  height: 50px;
 }
 
 .sound-button {
@@ -444,6 +441,11 @@ a {
     width: 24px;
     height: 64px;
     border-radius: 20%;
+  }
+
+  .add-to-bookmarks {
+    width: 200px;
+    height: 40px;
   }
 }
 
