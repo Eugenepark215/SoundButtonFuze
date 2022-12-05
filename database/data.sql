@@ -1,5 +1,5 @@
 insert into "users" ("username", "hashedPassword")
-values ('me', 'asdfasdfasdf');
+values ('demo', 'demo');
 
 insert into "sounds" ("userId", "soundName", "fileUrl", "uploadedAt")
 values (1, 'ahyoawho-rezero', '/sounds/ahyoawhoa.mp3', now()),

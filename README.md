@@ -62,7 +62,7 @@ Try the application live at https://sound-button-fuze.eugenepark.dev/
 1. Clone the repository.
 
     ```shell
-    git clone https://git@github.com:Eugenepark215/final-project.git
+    git clone https://git@github.com:Eugenepark215/SoundButtonFuze.git
     ```
 
 2. Install all dependencies with NPM.

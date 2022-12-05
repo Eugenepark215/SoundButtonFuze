@@ -92,9 +92,9 @@ export default class AuthForm extends React.Component {
 
   handleClick(event) {
     if (this.state.signInOrsignUp === 'signIn') {
-      this.setState({ signInOrsignUp: 'signUp', error: '', username: '', passsword: '' });
+      this.setState({ signInOrsignUp: 'signUp', error: '', username: '', password: '' });
     } else if (this.state.signInOrsignUp === 'signUp') {
-      this.setState({ signInOrsignUp: 'signIn', error: '', username: '', passsword: '' });
+      this.setState({ signInOrsignUp: 'signIn', error: '', username: '', password: '' });
     }
   }
 
