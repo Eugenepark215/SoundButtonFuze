@@ -45,7 +45,7 @@ Try the application live at https://sound-button-fuze.eugenepark.dev/
 
 ## Preview
 
-![Preview](images/kapture.gif)
+![Preview](./server/public/images/kapture.gif)
 
 ## Development
 
