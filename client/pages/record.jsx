@@ -12,7 +12,6 @@ export default class Recording extends React.Component {
       recordingStatus: null,
       audios: '',
       name: '',
-      account: null,
       submit: null,
       error: false,
       loading: true

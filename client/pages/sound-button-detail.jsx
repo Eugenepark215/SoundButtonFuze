@@ -10,7 +10,7 @@ export default class SoundButtonDetail extends React.Component {
     this.state = {
       current: null,
       playing: null,
-      account: null,
+      modal: null,
       error: false,
       loading: true
     };
@@ -48,16 +48,16 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   modal(event) {
-    if (this.state.account) {
+    if (this.state.modal) {
       this.stop(event);
-      return this.setState({ account: null });
+      return this.setState({ modal: null });
     }
     this.stop(event);
-    this.setState({ account: true });
+    this.setState({ modal: true });
   }
 
   handleModalClose(event) {
-    this.setState({ account: null });
+    this.setState({ modal: null });
   }
 
   render() {
@@ -104,10 +104,11 @@ export default class SoundButtonDetail extends React.Component {
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
-            <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>
+            {this.context.user && <button className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
+            {!this.context.user && <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
           </div>
         </div>
-        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)} />}
+        {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}
       </div>
     );
   }
