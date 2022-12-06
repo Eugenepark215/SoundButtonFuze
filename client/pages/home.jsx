@@ -10,7 +10,7 @@ export default class Home extends React.Component {
     this.state = {
       sounds: [],
       current: null,
-      account: null,
+      modal: null,
       loading: true,
       error: false
     };
@@ -45,10 +45,10 @@ export default class Home extends React.Component {
   }
 
   modal(event) {
-    if (this.state.account) {
-      return this.setState({ account: null });
+    if (this.state.modal) {
+      return this.setState({ modal: null });
     }
-    this.setState({ account: true });
+    this.setState({ modal: true });
   }
 
   modalAudioPlay(event) {
@@ -57,7 +57,7 @@ export default class Home extends React.Component {
   }
 
   handleModalClose(event) {
-    this.setState({ account: null });
+    this.setState({ modal: null });
   }
 
   render() {
@@ -113,7 +113,7 @@ export default class Home extends React.Component {
             );
           })}
         </div>
-        {this.state.account && <AuthForm onClose={event => this.handleModalClose(event)}/>}
+        {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)}/>}
         {this.state.loading && <LoadSpinner />}
       </div>
     );
