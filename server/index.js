@@ -137,6 +137,24 @@ app.get('/api/bookmarks', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
+app.post('/api/bookmarks', uploadsMiddleware, (req, res, next) => {
+  const userId = req.user.userId;
+  const soundId = Number(req.params.soundId);
+  if (!req.user.userId) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+  insert into "bookmarks" ("userId", "soundId")
+  values ($1, $2)
+  `;
+  const params = [userId, soundId];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
   const userId = req.user.userId;
   const filename = req.file.location;
