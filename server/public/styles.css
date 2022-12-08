@@ -114,6 +114,10 @@ a {
   background-color: rgb(110 223 246);
 }
 
+.single-button:hover {
+  background-color: rgb(110 223 246);
+}
+
 .audio-player {
   width: 200px;
 }
