@@ -32,7 +32,8 @@ create table "public"."users" (
 
 create table "public"."bookmarks" (
 	"userId" int NOT NULL,
-	"soundId" int NOT NULL
+	"soundId" int NOT NULL,
+  "uploadedAt" TIMESTAMP NOT NULL
 ) WITH (
   OIDS=FALSE
 );

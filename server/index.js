@@ -126,6 +126,7 @@ app.get('/api/bookmarks', (req, res, next) => {
   from "bookmarks" as "b"
   join "sounds" as "s" using ("soundId")
   where "b"."userId" = $1
+  order by "b"."uploadedAt" desc
   `;
   const params = [1];
   db.query(sql, params)
@@ -144,8 +145,8 @@ app.post('/api/bookmarks', uploadsMiddleware, (req, res, next) => {
     throw new ClientError(401, 'invalid login');
   }
   const sql = `
-  insert into "bookmarks" ("userId", "soundId")
-  values ($1, $2)
+  insert into "bookmarks" ("userId", "soundId", "uploadedAt")
+  values ($1, $2, now())
   `;
   const params = [userId, soundId];
   return db.query(sql, params)
