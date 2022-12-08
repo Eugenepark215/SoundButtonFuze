@@ -120,6 +120,25 @@ app.post('/api/users/sign-in', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
+app.delete('/api/bookmarks', (req, res, next) => {
+  const userId = req.user.userId;
+  const soundId = req.body.soundId;
+  if (!req.user.userId) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+  delete from "bookmarks"
+  where "userId" = $1
+  and "soundId" = $2
+  `;
+  const params = [userId, soundId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(204).json();
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/bookmarks', (req, res, next) => {
   const userId = req.user.userId;
   const sql = `
