@@ -1,6 +1,7 @@
 import React from 'react';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
+import Redirect from '../components/redirect';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
@@ -8,12 +9,19 @@ export default class Bookmark extends React.Component {
     this.state = {
       sounds: [],
       error: false,
-      loading: true
+      loading: true,
+      home: false
     };
   }
 
   componentDidMount() {
-    fetch('/api/bookmarks')
+    const token = window.localStorage.getItem('react-context-jwt');
+    const req = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch('/api/bookmarks', req)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -40,9 +48,16 @@ export default class Bookmark extends React.Component {
     }
   }
 
+  returnToHome(event) {
+    this.setState({ home: true });
+  }
+
   render() {
-    if (this.state.error === true) {
+    if (this.state.error) {
       return <ConnectionError />;
+    }
+    if (this.state.home) {
+      return <Redirect to ='#'/>;
     }
     return (
       <div>
@@ -75,7 +90,7 @@ export default class Bookmark extends React.Component {
         <div>
           <h2 className='text-align-center lucida-sans font-gray'>Bookmarks</h2>
         </div>
-        <div className='button-container display-flex flex-wrap'>
+        <div className='button-container display-flex flex-wrap lucida-sans'>
           {this.state.sounds.map((sound, index) => {
             const color = this.props.colors[sound.soundId % this.props.colors.length];
             return (
@@ -88,6 +103,15 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
+        {this.state.sounds.length === 0 && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
+          <div>
+            <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
+            <div className='display-flex justify-content-center'>
+              <button onClick={event => this.returnToHome(event)} className='return-to-home drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Return to Home</button>
+            </div>
+          </div>
+        </div>
+        }
         {this.state.loading && <LoadSpinner />}
       </div>
     );

@@ -118,7 +118,10 @@ app.post('/api/users/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.use(authorizationMiddleware);
+
 app.get('/api/bookmarks', (req, res, next) => {
+  const userId = req.user.userId;
   const sql = `
   select "b"."soundId",
           "s"."soundName",
@@ -126,8 +129,9 @@ app.get('/api/bookmarks', (req, res, next) => {
   from "bookmarks" as "b"
   join "sounds" as "s" using ("soundId")
   where "b"."userId" = $1
+  order by "b"."uploadedAt" desc
   `;
-  const params = [1];
+  const params = [userId];
   db.query(sql, params)
     .then(result => {
       res.status(200).json(result.rows);
@@ -135,7 +139,23 @@ app.get('/api/bookmarks', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.use(authorizationMiddleware);
+app.post('/api/bookmarks', uploadsMiddleware, (req, res, next) => {
+  const userId = req.user.userId;
+  const soundId = req.body.soundId;
+  if (!req.user.userId) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+  insert into "bookmarks" ("userId", "soundId", "uploadedAt")
+  values ($1, $2, now())
+  `;
+  const params = [userId, soundId];
+  return db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
 
 app.post('/api/sounds', uploadsMiddleware, (req, res, next) => {
   const userId = req.user.userId;

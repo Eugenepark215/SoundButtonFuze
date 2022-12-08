@@ -47,15 +47,14 @@
   height: 175px;
 }
 
-.single-button-header {
-  margin-top: 4rem;
-}
-
+.single-button-header,
+.bookmark-text-holder,
 .record-header {
   margin-top: 4rem;
 }
 
-.add-to-bookmarks {
+.add-to-bookmarks,
+.return-to-home {
   margin-top: 3rem;
 }
 
@@ -106,15 +105,14 @@
     margin-top: 2rem;
   }
 
-  .single-button-header {
+  .single-button-header,
+  .record-header,
+  .bookmark-text-holder {
     margin-top: 2rem;
   }
 
-  .record-header {
-    margin-top: 2rem;
-  }
-
-  .add-to-bookmarks {
+  .add-to-bookmarks,
+  .return-to-home {
     margin-top: 5rem;
     width: 200px;
     font-size: large;
@@ -145,15 +143,14 @@
     height: 300px;
   }
 
-  .single-button-header {
+  .single-button-header,
+  .record-header,
+  .bookmark-text-holder {
     margin-top: 5rem;
   }
 
-  .add-to-bookmarks {
+  .add-to-bookmarks,
+  .return-to-home {
     width: 250px;
-  }
-
-  .record-header {
-    margin-top: 5rem;
   }
 }
