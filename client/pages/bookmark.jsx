@@ -13,7 +13,13 @@ export default class Bookmark extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/bookmarks')
+    const token = window.localStorage.getItem('react-context-jwt');
+    const req = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch('/api/bookmarks', req)
       .then(res => {
         if (res.ok) {
           return res.json();

@@ -118,7 +118,10 @@ app.post('/api/users/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.use(authorizationMiddleware);
+
 app.get('/api/bookmarks', (req, res, next) => {
+  const userId = req.user.userId;
   const sql = `
   select "b"."soundId",
           "s"."soundName",
@@ -128,15 +131,13 @@ app.get('/api/bookmarks', (req, res, next) => {
   where "b"."userId" = $1
   order by "b"."uploadedAt" desc
   `;
-  const params = [1];
+  const params = [userId];
   db.query(sql, params)
     .then(result => {
       res.status(200).json(result.rows);
     })
     .catch(err => next(err));
 });
-
-app.use(authorizationMiddleware);
 
 app.post('/api/bookmarks', uploadsMiddleware, (req, res, next) => {
   const userId = req.user.userId;
