@@ -25,14 +25,3 @@ values (1, 'ahyoawho-rezero', '/sounds/ahyoawhoa.mp3', now()),
         (1, 'sitcom-laughing', '/sounds/sitcom-laughing-and-applause.mp3', now()),
        (1, 'you-kinda-smell-like-a-baka','/sounds/you-kinda-smell-like-a-baka.mp3', now()),
        (1, 'yeet','/sounds/yeet.mp3', now());
-
-insert into "bookmarks" ("userId", "soundId", "uploadedAt")
-values ('1', 1, now()),
-        ('1', 2, now()),
-        ('1', 3, now()),
-        ('1', 4, now()),
-        ('1', 5, now()),
-        ('1', 6, now()),
-        ('1', 7, now()),
-        ('1', 8, now()),
-        ('1', 9, now())
