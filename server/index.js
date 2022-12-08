@@ -139,7 +139,7 @@ app.use(authorizationMiddleware);
 
 app.post('/api/bookmarks', uploadsMiddleware, (req, res, next) => {
   const userId = req.user.userId;
-  const soundId = Number(req.params.soundId);
+  const soundId = req.body.soundId;
   if (!req.user.userId) {
     throw new ClientError(401, 'invalid login');
   }
