@@ -8,7 +8,8 @@ export default class Bookmark extends React.Component {
     this.state = {
       sounds: [],
       error: false,
-      loading: true
+      loading: true,
+      bookmarks: false
     };
   }
 
@@ -81,7 +82,7 @@ export default class Bookmark extends React.Component {
         <div>
           <h2 className='text-align-center lucida-sans font-gray'>Bookmarks</h2>
         </div>
-        <div className='button-container display-flex flex-wrap'>
+        <div className='button-container display-flex flex-wrap lucida-sans'>
           {this.state.sounds.map((sound, index) => {
             const color = this.props.colors[sound.soundId % this.props.colors.length];
             return (
@@ -94,6 +95,15 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
+        {!this.state.bookmarks && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
+          <div>
+            <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
+            <div className='display-flex justify-content-center'>
+              <button className='return-to-home drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Return to Home</button>
+            </div>
+          </div>
+        </div>
+        }
         {this.state.loading && <LoadSpinner />}
       </div>
     );

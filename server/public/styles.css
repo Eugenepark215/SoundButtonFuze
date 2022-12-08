@@ -99,7 +99,8 @@ a {
   border-radius: 5px;
 }
 
-.add-to-bookmarks {
+.add-to-bookmarks,
+.return-to-home {
   font-size: larger;
   width: 200px;
   height: 50px;
@@ -447,7 +448,8 @@ a {
     border-radius: 20%;
   }
 
-  .add-to-bookmarks {
+  .add-to-bookmarks,
+  .return-to-home {
     width: 200px;
     height: 40px;
   }
