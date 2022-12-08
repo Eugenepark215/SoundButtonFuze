@@ -10,7 +10,6 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
-      bookmarks: false,
       home: false
     };
   }
@@ -104,7 +103,7 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
-        {!this.state.bookmarks && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
+        {this.state.sounds.length === 0 && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
           <div>
             <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
             <div className='display-flex justify-content-center'>
