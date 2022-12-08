@@ -49,7 +49,7 @@ export default class SoundButtonDetail extends React.Component {
         if (!res.ok) {
           this.setState({ error: true });
         }
-        this.setState({ false: true });
+        this.setState({ add: true });
       });
   }
 
