@@ -1,6 +1,7 @@
 import React from 'react';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
+import Redirect from '../components/redirect';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
-      bookmarks: false
+      bookmarks: false,
+      home: false
     };
   }
 
@@ -47,9 +49,16 @@ export default class Bookmark extends React.Component {
     }
   }
 
+  returnToHome(event) {
+    this.setState({ home: true });
+  }
+
   render() {
-    if (this.state.error === true) {
+    if (this.state.error) {
       return <ConnectionError />;
+    }
+    if (this.state.home) {
+      return <Redirect to ='#'/>;
     }
     return (
       <div>
@@ -99,7 +108,7 @@ export default class Bookmark extends React.Component {
           <div>
             <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
             <div className='display-flex justify-content-center'>
-              <button className='return-to-home drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Return to Home</button>
+              <button onClick={event => this.returnToHome(event)} className='return-to-home drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Return to Home</button>
             </div>
           </div>
         </div>
