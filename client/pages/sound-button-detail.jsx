@@ -14,7 +14,7 @@ export default class SoundButtonDetail extends React.Component {
       modal: null,
       error: false,
       loading: true,
-      add: false
+      bookmark: null
     };
   }
 
@@ -49,7 +49,24 @@ export default class SoundButtonDetail extends React.Component {
         if (!res.ok) {
           this.setState({ error: true });
         }
-        this.setState({ add: true });
+        this.setState({ bookmark: true });
+      });
+  }
+
+  removeFromBookmark(event) {
+    const token = window.localStorage.getItem('react-context-jwt');
+    const req = {
+      headers: {
+        'X-Access-Token': token
+      },
+      method: 'DELETE'
+    };
+    fetch(`api/bookmarks/${this.props.soundId}`, req)
+      .then(res => {
+        if (!res.ok) {
+          this.setState({ error: true });
+        }
+        this.setState({ bookmark: false });
       });
   }
 
@@ -88,8 +105,8 @@ export default class SoundButtonDetail extends React.Component {
     if (this.state.error === true) {
       return <ConnectionError />;
     }
-    if (this.state.add) {
-      return <Redirect to ="#bookmark" />;
+    if (this.state.bookmark || this.state.bookmark === false) {
+      return <Redirect to ="#bookmarks" />;
     }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
@@ -118,7 +135,7 @@ export default class SoundButtonDetail extends React.Component {
                 </div>
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modal(event)} className="fa-solid fa-bookmark white" />}
-                  {this.context.user && <a onClick={event => this.stop(event)} href='#bookmark'>
+                  {this.context.user && <a onClick={event => this.stop(event)} href='#bookmarks'>
                     <i className="fa-solid fa-bookmark white" />
                     </a>}
                 </div>
@@ -132,6 +149,7 @@ export default class SoundButtonDetail extends React.Component {
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
             {this.context.user && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
             {!this.context.user && <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
+            <button onClick={event => this.removeFromBookmark(event)}>Remove</button>
           </div>
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}

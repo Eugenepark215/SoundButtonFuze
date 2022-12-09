@@ -120,9 +120,9 @@ app.post('/api/users/sign-in', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
-app.delete('/api/bookmarks', (req, res, next) => {
+app.delete('/api/bookmarks/:soundId', (req, res, next) => {
   const userId = req.user.userId;
-  const soundId = req.body.soundId;
+  const soundId = Number(req.params.soundId);
   if (!req.user.userId) {
     throw new ClientError(401, 'invalid login');
   }
@@ -134,7 +134,7 @@ app.delete('/api/bookmarks', (req, res, next) => {
   const params = [userId, soundId];
   db.query(sql, params)
     .then(result => {
-      res.status(204).json();
+      res.sendStatus(204);
     })
     .catch(err => next(err));
 });

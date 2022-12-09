@@ -64,7 +64,7 @@ export default class App extends React.Component {
     if (route.path === 'record') {
       return <Recording />;
     }
-    if (route.path === 'bookmark') {
+    if (route.path === 'bookmarks') {
       return <Bookmark colors={colors}/>;
     }
   }
