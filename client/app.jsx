@@ -67,6 +67,10 @@ export default class App extends React.Component {
     if (route.path === 'bookmarks') {
       return <Bookmark colors={colors}/>;
     }
+    if (route.path === 'bookmark') {
+      const soundId = route.params.get('soundId');
+      return <SoundButtonDetail colors={colors} soundId={soundId} />;
+    }
   }
 
   render() {
