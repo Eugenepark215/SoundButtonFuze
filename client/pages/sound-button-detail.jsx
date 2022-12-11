@@ -19,6 +19,12 @@ export default class SoundButtonDetail extends React.Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem('react-context-jwt');
+    const req = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
     fetch(`api/sounds/${this.props.soundId}`)
       .then(res => {
         if (res.ok) {
@@ -28,7 +34,15 @@ export default class SoundButtonDetail extends React.Component {
         }
       })
       .then(sound => {
-        this.setState({ current: sound });
+        fetch(`api/bookmarks/${this.props.soundId}`, req)
+          .then(res => res.json())
+          .then(data => {
+            if (data.length !== 0) {
+              this.setState({ bookmark: true, current: sound });
+            } else {
+              this.setState({ current: sound });
+            }
+          });
       });
   }
 
@@ -147,9 +161,9 @@ export default class SoundButtonDetail extends React.Component {
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
-            {this.context.user && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
+            {!this.state.bookmark && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
             {!this.context.user && <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
-            <button onClick={event => this.removeFromBookmark(event)}>Remove</button>
+            {this.state.bookmark && <button className='remove-from-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none' onClick={event => this.removeFromBookmark(event)}>Remove</button>}
           </div>
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}
