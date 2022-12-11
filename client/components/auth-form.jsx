@@ -112,7 +112,7 @@ export default class AuthForm extends React.Component {
             <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='text'
               placeholder='Username' name="username" value={this.state.username} />
             {this.state.error && <div className='error'>{typeOfError}</div>}
-            <input required onChange={this.handleChangeAuth} className='auth-input' type='password'
+            <input required onChange={this.handleChangeAuth} className={`auth-input ${error}`} type='password'
               placeholder='Password' name="password" value={this.state.password} />
             <div className='modal-anchor-submit display-flex'>
               <a className='modal-anchor' onClick={event => this.handleClick(event)}>{signInOrsignUpAnchor}</a>
