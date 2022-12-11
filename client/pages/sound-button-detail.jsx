@@ -3,7 +3,6 @@ import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 import ConnectionError from '../components/connection-error';
 import LoadSpinner from '../components/load-spinner';
-import Redirect from '../components/redirect';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -118,9 +117,6 @@ export default class SoundButtonDetail extends React.Component {
     if (!this.state.current) return <LoadSpinner />;
     if (this.state.error === true) {
       return <ConnectionError />;
-    }
-    if (this.state.bookmark || this.state.bookmark === false) {
-      return <Redirect to ="#bookmarks" />;
     }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
