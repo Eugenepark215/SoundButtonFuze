@@ -100,7 +100,8 @@ a {
 }
 
 .add-to-bookmarks,
-.return-to-home {
+.return-to-home,
+.remove-from-bookmarks {
   font-size: larger;
   width: 200px;
   height: 50px;
@@ -449,7 +450,8 @@ a {
   }
 
   .add-to-bookmarks,
-  .return-to-home {
+  .return-to-home,
+  .remove-from-bookmarks {
     width: 200px;
     height: 40px;
   }

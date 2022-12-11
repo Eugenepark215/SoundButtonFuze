@@ -54,7 +54,8 @@
 }
 
 .add-to-bookmarks,
-.return-to-home {
+.return-to-home,
+.remove-from-bookmarks {
   margin-top: 3rem;
 }
 
@@ -112,7 +113,8 @@
   }
 
   .add-to-bookmarks,
-  .return-to-home {
+  .return-to-home,
+  .remove-from-bookmarks {
     margin-top: 5rem;
     width: 200px;
     font-size: large;
@@ -150,7 +152,8 @@
   }
 
   .add-to-bookmarks,
-  .return-to-home {
+  .return-to-home,
+  .remove-from-bookmarks {
     width: 250px;
   }
 }

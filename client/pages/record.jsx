@@ -159,7 +159,7 @@ export default class Recording extends React.Component {
                   </a>
                 </div>
                 <div className="column-third text-align-center">
-                  <a href='#bookmark' onClick={event => this.stopMic(event)}>
+                  <a href='#bookmarks' onClick={event => this.stopMic(event)}>
                     <i className="fa-solid fa-bookmark white" />
                   </a>
                 </div>

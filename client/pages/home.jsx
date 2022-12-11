@@ -89,7 +89,7 @@ export default class Home extends React.Component {
                 <div className="column-third text-align-center">
                   {!this.context.user && <i onClick={event => this.modalAudioPlay(event)} className="fa-solid fa-bookmark white" />}
                   {this.context.user &&
-                  <a onClick={event => this.audioPlay(event)} href='#bookmark'>
+                  <a onClick={event => this.audioPlay(event)} href='#bookmarks'>
                     <i className="fa-solid fa-bookmark white" />
                   </a>}
                 </div>
