@@ -3,6 +3,7 @@ import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
+import SignOut from '../components/sign-out';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -115,6 +116,7 @@ export default class Home extends React.Component {
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)}/>}
         {this.state.loading && <LoadSpinner />}
+        <SignOut/>
       </div>
     );
   }

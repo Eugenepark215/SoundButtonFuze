@@ -2,6 +2,7 @@ import React from 'react';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
 import Redirect from '../components/redirect';
+import SignOut from '../components/sign-out';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
@@ -113,6 +114,7 @@ export default class Bookmark extends React.Component {
         </div>
         }
         {this.state.loading && <LoadSpinner />}
+        <SignOut/>
       </div>
     );
   }
