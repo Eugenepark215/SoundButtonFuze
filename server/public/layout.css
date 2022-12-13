@@ -55,7 +55,8 @@
 
 .add-to-bookmarks,
 .return-to-home,
-.remove-from-bookmarks {
+.remove-from-bookmarks,
+.sign-out {
   margin-top: 3rem;
 }
 
@@ -108,13 +109,15 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder {
+  .bookmark-text-holder,
+  .sign-out {
     margin-top: 2rem;
   }
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks {
+  .remove-from-bookmarks,
+  .sign-out {
     margin-top: 5rem;
     width: 200px;
     font-size: large;
@@ -147,13 +150,15 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder {
+  .bookmark-text-holder,
+  .sign-out {
     margin-top: 5rem;
   }
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks {
+  .remove-from-bookmarks,
+  .sign-out {
     width: 250px;
   }
 }

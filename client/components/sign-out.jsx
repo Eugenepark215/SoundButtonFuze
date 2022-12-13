@@ -1,6 +1,8 @@
 import React from 'react';
 export default function SignOut() {
   return (
-    <button>Sign-Out</button>
+    <div className='display-flex justify-content-center'>
+      <button className='sign-out drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Sign-Out</button>
+    </div>
   );
 }

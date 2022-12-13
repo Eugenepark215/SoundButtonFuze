@@ -101,7 +101,8 @@ a {
 
 .add-to-bookmarks,
 .return-to-home,
-.remove-from-bookmarks {
+.remove-from-bookmarks,
+.sign-out {
   font-size: larger;
   width: 200px;
   height: 50px;
@@ -451,7 +452,8 @@ a {
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks {
+  .remove-from-bookmarks,
+  .sign-out {
     width: 200px;
     height: 40px;
   }
