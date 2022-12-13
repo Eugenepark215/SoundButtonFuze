@@ -116,7 +116,7 @@ export default class Home extends React.Component {
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)}/>}
         {this.state.loading && <LoadSpinner />}
-        <SignOut/>
+        {this.context.user && <SignOut />}
       </div>
     );
   }

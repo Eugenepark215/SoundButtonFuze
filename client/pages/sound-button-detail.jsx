@@ -160,11 +160,11 @@ export default class SoundButtonDetail extends React.Component {
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
             {!this.state.bookmark && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
             {!this.context.user && <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
-            {this.state.bookmark && <button className='remove-from-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none' onClick={event => this.removeFromBookmark(event)}>Remove</button>}
+            {this.state.bookmark && this.context.user && <button className='remove-from-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none' onClick={event => this.removeFromBookmark(event)}>Remove</button>}
           </div>
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}
-        <SignOut/>
+        {this.context.user && <SignOut/>}
       </div>
     );
   }
