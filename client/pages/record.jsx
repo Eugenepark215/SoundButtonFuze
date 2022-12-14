@@ -3,7 +3,6 @@ import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
 import ConnectionError from '../components/connection-error';
 import LoadSpinner from '../components/load-spinner';
-import SignOut from '../components/sign-out';
 const MicRecorder = require('mic-recorder-to-mp3');
 
 export default class Recording extends React.Component {
@@ -200,7 +199,6 @@ export default class Recording extends React.Component {
           </form>}
         </div>
         {this.state.loading && <LoadSpinner />}
-        <SignOut/>
       </div>
     );
   }

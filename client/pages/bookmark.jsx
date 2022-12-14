@@ -2,7 +2,6 @@ import React from 'react';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
 import Redirect from '../components/redirect';
-import SignOut from '../components/sign-out';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
@@ -11,7 +10,8 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
-      home: false
+      home: false,
+      signOut: null
     };
   }
 
@@ -51,6 +51,11 @@ export default class Bookmark extends React.Component {
 
   returnToHome(event) {
     this.setState({ home: true });
+  }
+
+  signOut(event) {
+    window.localStorage.removeItem('react-context-jwt');
+    this.setState({ signOut: true });
   }
 
   render() {
@@ -114,7 +119,6 @@ export default class Bookmark extends React.Component {
         </div>
         }
         {this.state.loading && <LoadSpinner />}
-        <SignOut/>
       </div>
     );
   }

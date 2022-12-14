@@ -3,7 +3,7 @@ import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 import ConnectionError from '../components/connection-error';
 import LoadSpinner from '../components/load-spinner';
-import SignOut from '../components/sign-out';
+// import SignOut from '../components/sign-out';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -164,7 +164,7 @@ export default class SoundButtonDetail extends React.Component {
           </div>
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}
-        {this.context.user && <SignOut/>}
+        {/* {this.context.user && <SignOut/>} */}
       </div>
     );
   }
