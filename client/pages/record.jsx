@@ -108,7 +108,6 @@ export default class Recording extends React.Component {
     formData.append('fileUrl', this.file);
     formData.append('soundName', this.state.name);
     formData.append('userId', this.context.user.userId);
-    // this.stopMic(event);
     const req = {
       headers: {
         'X-Access-Token': token
