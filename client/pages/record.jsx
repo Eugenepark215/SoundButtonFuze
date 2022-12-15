@@ -108,7 +108,7 @@ export default class Recording extends React.Component {
     formData.append('fileUrl', this.file);
     formData.append('soundName', this.state.name);
     formData.append('userId', this.context.user.userId);
-    this.stopMic(event);
+    // this.stopMic(event);
     const req = {
       headers: {
         'X-Access-Token': token
@@ -130,13 +130,14 @@ export default class Recording extends React.Component {
   }
 
   render() {
-    if (this.state.submit || !this.context.user) {
-      return <Redirect to="#" />;
-    }
     if (this.state.error) {
       return <ConnectionError />;
     }
-    const something = !this.state.recordingStatus ? 'hidden' : ' ';
+    if (this.state.submit || !this.context.user) {
+      this.stopMic();
+      return <Redirect to="#" />;
+    }
+    const oscillator = !this.state.recordingStatus ? 'hidden' : ' ';
     return (
       <div>
         <div>
@@ -177,7 +178,7 @@ export default class Recording extends React.Component {
             {this.state.recordingStatus && <button onClick={event => this.stop(event)} className='single-button drop-shadow margin-top border-radius-50 border-none cyan-background'>
               <i className='icon-recording fa-solid fa-square red' />
             </button>}
-            <canvas ref={this.myRef} className={something}/>
+            <canvas ref={this.myRef} className={oscillator}/>
           </div>
           <div className='audio-player-column justify-content-center display-flex'>
             <audio ref={a => {
