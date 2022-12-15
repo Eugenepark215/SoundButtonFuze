@@ -55,9 +55,6 @@ export default class App extends React.Component {
 
   signOut(event) {
     window.localStorage.removeItem('react-context-jwt');
-    // if (this.state.route.path.includes('bookmark') || this.state.route.path === 'record') {
-    //   this.setState({ user: null });
-    // }
     this.setState({ user: null });
   }
 
@@ -83,9 +80,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, route } = this.state;
     const { handleSignIn } = this;
-    const contextValue = { user, handleSignIn };
+    const contextValue = { user, route, handleSignIn };
     return (
       <div>
         <AppContext.Provider value={contextValue}>
