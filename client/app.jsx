@@ -55,9 +55,9 @@ export default class App extends React.Component {
 
   signOut(event) {
     window.localStorage.removeItem('react-context-jwt');
-    if (this.state.route.path.includes('bookmark') || this.state.route.path === 'record') {
-      this.setState({ user: null });
-    }
+    // if (this.state.route.path.includes('bookmark') || this.state.route.path === 'record') {
+    //   this.setState({ user: null });
+    // }
     this.setState({ user: null });
   }
 

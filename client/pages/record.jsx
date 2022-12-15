@@ -130,10 +130,10 @@ export default class Recording extends React.Component {
   }
 
   render() {
-    if (this.state.submit === true) {
+    if (this.state.submit || !this.context.user) {
       return <Redirect to="#" />;
     }
-    if (this.state.error === true) {
+    if (this.state.error) {
       return <ConnectionError />;
     }
     const something = !this.state.recordingStatus ? 'hidden' : ' ';
