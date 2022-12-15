@@ -122,6 +122,9 @@ export default class SoundButtonDetail extends React.Component {
     if (!this.context.user && this.context.route.path.includes('bookmark')) {
       return <Redirect to ='#'/>;
     }
+    if (this.context.route.path.includes('bookmark') && this.state.bookmark === false) {
+      return <Redirect to='#' />;
+    }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
       <div>
