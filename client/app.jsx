@@ -23,7 +23,8 @@ export default class App extends React.Component {
     this.state = {
       sounds: [],
       route: ParseRoute(window.location.hash),
-      user: ''
+      user: '',
+      logOut: null
     };
     this.handleSignIn = this.handleSignIn.bind(this);
   }
@@ -52,6 +53,11 @@ export default class App extends React.Component {
     this.setState({ user });
   }
 
+  signOut(event) {
+    window.localStorage.removeItem('react-context-jwt');
+    this.setState({ user: null });
+  }
+
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
@@ -74,14 +80,17 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, route } = this.state;
     const { handleSignIn } = this;
-    const contextValue = { user, handleSignIn };
+    const contextValue = { user, route, handleSignIn };
     return (
       <div>
         <AppContext.Provider value={contextValue}>
           {this.renderPage()}
         </AppContext.Provider>
+        {this.state.user !== null && <div className='display-flex justify-content-center'>
+          <button onClick={event => this.signOut(event)} className='sign-out drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Sign-Out</button>
+        </div>}
       </div>
     );
   }

@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.sign-out {
+  position: fixed;
+  bottom: 0;
+}
+
 .text-align-center {
   text-align: center;
 }
@@ -55,7 +60,8 @@
 
 .add-to-bookmarks,
 .return-to-home,
-.remove-from-bookmarks {
+.remove-from-bookmarks,
+.sign-out {
   margin-top: 3rem;
 }
 
@@ -76,6 +82,10 @@
   flex-basis: calc(100%/2);
   margin-right: 1rem;
   margin-left: 5rem;
+}
+
+.button-container {
+  margin-bottom: 5rem;
 }
 
 @media screen and (min-width: 750px) {
@@ -108,13 +118,15 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder {
+  .bookmark-text-holder,
+  .sign-out {
     margin-top: 2rem;
   }
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks {
+  .remove-from-bookmarks,
+  .sign-out {
     margin-top: 5rem;
     width: 200px;
     font-size: large;
@@ -123,6 +135,7 @@
   .button-container {
     margin-left: 8rem;
     margin-right: 8rem;
+    margin-bottom: 8rem;
   }
 }
 
@@ -138,6 +151,7 @@
   .button-container {
     margin-left: 15rem;
     margin-right: 15rem;
+    margin-bottom: 15rem;
   }
 
   .single-button {
@@ -147,13 +161,15 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder {
+  .bookmark-text-holder,
+  .sign-out {
     margin-top: 5rem;
   }
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks {
+  .remove-from-bookmarks,
+  .sign-out {
     width: 250px;
   }
 }

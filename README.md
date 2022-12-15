@@ -35,11 +35,11 @@ Try the application live at https://sound-button-fuze.eugenepark.dev/
   * User can submit and view recorded sound on homepage
   * User can view bookmarked sounds
   * User can bookmark sounds
+  * User can remove sounds from bookmark
 
 
-## Stretch Feature
+## Stretch Features
 
-  * User can unbookmark sounds
   * User can play a medley of their bookmarked sounds
   * User can upload and set an image for their recorded sound
 

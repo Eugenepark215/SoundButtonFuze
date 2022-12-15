@@ -3,6 +3,7 @@ import AuthForm from '../components/auth-form';
 import AppContext from '../lib/app-context';
 import ConnectionError from '../components/connection-error';
 import LoadSpinner from '../components/load-spinner';
+import Redirect from '../components/redirect';
 
 export default class SoundButtonDetail extends React.Component {
   constructor(props) {
@@ -12,7 +13,6 @@ export default class SoundButtonDetail extends React.Component {
       playing: null,
       modal: null,
       error: false,
-      loading: true,
       bookmark: null
     };
   }
@@ -36,7 +36,10 @@ export default class SoundButtonDetail extends React.Component {
         fetch(`api/bookmarks/${this.props.soundId}`, req)
           .then(res => res.json())
           .then(data => {
-            if (data.length !== 0) {
+            if (data instanceof Object) {
+              this.setState({ current: sound });
+            }
+            if (data.length !== 0 && this.context.user) {
               this.setState({ bookmark: true, current: sound });
             } else {
               this.setState({ current: sound });
@@ -115,8 +118,14 @@ export default class SoundButtonDetail extends React.Component {
 
   render() {
     if (!this.state.current) return <LoadSpinner />;
-    if (this.state.error === true) {
+    if (this.state.error) {
       return <ConnectionError />;
+    }
+    if (!this.context.user && this.context.route.path.includes('bookmark')) {
+      return <Redirect to ='#'/>;
+    }
+    if (this.context.route.path.includes('bookmark') && this.state.bookmark === false) {
+      return <Redirect to='#' />;
     }
     const color = this.props.colors[(this.props.soundId) % this.props.colors.length];
     return (
@@ -157,9 +166,9 @@ export default class SoundButtonDetail extends React.Component {
           <h2 className='single-button-header lucida-sans font-gray text-align-center'>{this.state.current.soundName}</h2>
           <div className='align-center display-flex flex-direction-column'>
             <button onClick={event => this.audioPlay(event)} className={`single-button drop-shadow margin-top border-radius-50 border-none ${color}`} />
-            {!this.state.bookmark && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
+            {!this.state.bookmark && this.context.user && <button onClick={event => this.addToBookmark(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
             {!this.context.user && <button onClick={event => this.modal(event)} className='add-to-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Add to Bookmarks</button>}
-            {this.state.bookmark && <button className='remove-from-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none' onClick={event => this.removeFromBookmark(event)}>Remove</button>}
+            {this.state.bookmark && this.context.user && <button className='remove-from-bookmarks drop-shadow border-radius-5px white lucida-sans cyan-background border-none' onClick={event => this.removeFromBookmark(event)}>Remove</button>}
           </div>
         </div>
         {this.state.modal && <AuthForm onClose={event => this.handleModalClose(event)} />}

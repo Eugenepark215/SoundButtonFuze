@@ -2,6 +2,7 @@ import React from 'react';
 import LoadSpinner from '../components/load-spinner';
 import ConnectionError from '../components/connection-error';
 import Redirect from '../components/redirect';
+import AppContext from '../lib/app-context';
 
 export default class Bookmark extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
-      home: false
+      home: false,
+      signOut: null
     };
   }
 
@@ -52,11 +54,16 @@ export default class Bookmark extends React.Component {
     this.setState({ home: true });
   }
 
+  signOut(event) {
+    window.localStorage.removeItem('react-context-jwt');
+    this.setState({ signOut: true });
+  }
+
   render() {
     if (this.state.error) {
       return <ConnectionError />;
     }
-    if (this.state.home) {
+    if (this.state.home || !this.context.user) {
       return <Redirect to ='#'/>;
     }
     return (
@@ -117,3 +124,5 @@ export default class Bookmark extends React.Component {
     );
   }
 }
+
+Bookmark.contextType = AppContext;
