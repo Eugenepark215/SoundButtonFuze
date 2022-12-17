@@ -59,6 +59,17 @@ export default class Bookmark extends React.Component {
     this.setState({ signOut: true });
   }
 
+  playMedley(event) {
+    if (this.state.current) {
+      this.state.current.pause();
+    }
+    for (let i = 0; i < this.state.sounds.length; i++) {
+      const sound = new Audio();
+      sound.src = this.state.sounds[i].fileUrl;
+      sound.play();
+    }
+  }
+
   render() {
     if (this.state.error) {
       return <ConnectionError />;
@@ -109,6 +120,9 @@ export default class Bookmark extends React.Component {
               </div>
             );
           })}
+        </div>
+        <div className='display-flex align-center justify-content-center'>
+          <button onClick={event => this.playMedley(event)} className='drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Play Medley</button>
         </div>
         {this.state.sounds.length === 0 && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
           <div>
