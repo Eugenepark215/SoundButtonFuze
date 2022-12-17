@@ -118,8 +118,7 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder,
-  .sign-out {
+  .bookmark-text-holder {
     margin-top: 2rem;
   }
 
@@ -129,6 +128,7 @@
   .sign-out {
     margin-top: 5rem;
     width: 200px;
+    height: 40px;
     font-size: large;
   }
 
@@ -161,8 +161,7 @@
 
   .single-button-header,
   .record-header,
-  .bookmark-text-holder,
-  .sign-out {
+  .bookmark-text-holder {
     margin-top: 5rem;
   }
 
