@@ -59,7 +59,8 @@ export default class Bookmark extends React.Component {
     this.setState({ signOut: true });
   }
 
-  playMedley(event) {
+  async playMedley(event) {
+    const timer = millisecond => new Promise(resolve => setTimeout(resolve, millisecond));
     if (this.state.current) {
       this.state.current.pause();
     }
@@ -67,6 +68,7 @@ export default class Bookmark extends React.Component {
       const sound = new Audio();
       sound.src = this.state.sounds[i].fileUrl;
       sound.play();
+      await timer(500);
     }
   }
 
