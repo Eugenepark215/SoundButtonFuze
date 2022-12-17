@@ -102,7 +102,8 @@ a {
 .add-to-bookmarks,
 .return-to-home,
 .remove-from-bookmarks,
-.sign-out {
+.sign-out,
+.play-medley {
   font-size: larger;
   width: 200px;
   height: 50px;
@@ -453,7 +454,8 @@ a {
   .add-to-bookmarks,
   .return-to-home,
   .remove-from-bookmarks,
-  .sign-out {
+  .sign-out,
+  .play-medley {
     width: 200px;
     height: 40px;
   }
