@@ -123,9 +123,9 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
-        <div className='display-flex align-center justify-content-center'>
+        {this.state.sounds.length !== 0 && <div className='display-flex align-center justify-content-center'>
           <button onClick={event => this.playMedley(event)} className='play-medley drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Play Medley</button>
-        </div>
+        </div>}
         {this.state.sounds.length === 0 && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
           <div>
             <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
