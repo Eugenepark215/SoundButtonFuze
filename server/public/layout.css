@@ -5,6 +5,8 @@
 .sign-out {
   position: fixed;
   bottom: 0;
+  width: 100px;
+  height: 30px;
 }
 
 .text-align-center {
@@ -61,7 +63,10 @@
 .add-to-bookmarks,
 .return-to-home,
 .remove-from-bookmarks,
-.sign-out {
+.play-medley {
+  font-size: larger;
+  width: 200px;
+  height: 50px;
   margin-top: 3rem;
 }
 
@@ -125,7 +130,8 @@
   .add-to-bookmarks,
   .return-to-home,
   .remove-from-bookmarks,
-  .sign-out {
+  .sign-out,
+  .play-medley {
     margin-top: 5rem;
     width: 200px;
     height: 40px;
