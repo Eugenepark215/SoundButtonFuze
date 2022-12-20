@@ -12,9 +12,11 @@ export default class Bookmark extends React.Component {
       error: false,
       loading: true,
       current: null,
+      previous: null,
       home: false,
       signOut: null,
-      medley: []
+      medley: [],
+      medleyPlaying: true
     };
   }
 
@@ -44,23 +46,32 @@ export default class Bookmark extends React.Component {
       });
   }
 
+  componentDidUpdate(prevState) {
+    if (this.state.current && this.state.current !== prevState.current) {
+      return true;
+    }
+  }
+
   audioPlay(event) {
     const sound = new Audio();
     if (this.state.current) {
       this.state.current.pause();
+    }
+    if (!this.state.current) {
+      this.setState({ medleyPlaying: false });
+    }
+    for (let i = 0; i < this.state.sounds.length; i++) {
+      if (parseInt(event.target.id) === i) {
+        sound.src = this.state.sounds[i].fileUrl;
+        sound.play();
+        this.setState({ current: sound, medleyPlaying: false });
+      }
     }
     const { medley } = this.state;
     if (medley) {
       for (let i = 0; i < medley.length; i++) {
         medley[i].pause();
         medley[i].currentTime = 0;
-      }
-    }
-    for (let i = 0; i < this.state.sounds.length; i++) {
-      if (parseInt(event.target.id) === i) {
-        sound.src = this.state.sounds[i].fileUrl;
-        sound.play();
-        this.setState({ current: sound });
       }
     }
   }
@@ -74,19 +85,19 @@ export default class Bookmark extends React.Component {
     this.setState({ signOut: true });
   }
 
-  async playMedley(event) {
+  async playMedley(event, prevState) {
     const timer = millisecond => new Promise(resolve => setTimeout(resolve, millisecond));
     if (this.state.current) {
       this.state.current.pause();
     }
     for (let i = 0; i < this.state.medley.length; i++) {
-      if (this.state.current) {
+      if (!this.state.medleyPlaying) {
+        this.setState({ medleyPlaying: true });
         break;
       }
       this.state.medley[i].play();
       await timer(500);
     }
-    this.setState({ current: null });
   }
 
   render() {
