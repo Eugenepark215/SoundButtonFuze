@@ -11,8 +11,10 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
+      current: null,
       home: false,
-      signOut: null
+      signOut: null,
+      medley: []
     };
   }
 
@@ -32,7 +34,13 @@ export default class Bookmark extends React.Component {
         }
       })
       .then(sound => {
-        this.setState({ sounds: sound, loading: false });
+        const medleyArray = [];
+        for (let i = 0; i < sound.length; i++) {
+          const sounds = new Audio();
+          sounds.src = sound[i].fileUrl;
+          medleyArray.push(sounds);
+          this.setState({ sounds: sound, loading: false, medley: medleyArray });
+        }
       });
   }
 
@@ -40,6 +48,11 @@ export default class Bookmark extends React.Component {
     const sound = new Audio();
     if (this.state.current) {
       this.state.current.pause();
+    }
+    if (this.state.medley.length !== 0) {
+      for (let i = 0; i < this.state.sounds.length; i++) {
+        this.state.medley[i].pause();
+      }
     }
     for (let i = 0; i < this.state.sounds.length; i++) {
       if (parseInt(event.target.id) === i) {
@@ -64,9 +77,12 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
+    const medleyArray = [];
     for (let i = 0; i < this.state.sounds.length; i++) {
       const sound = new Audio();
       sound.src = this.state.sounds[i].fileUrl;
+      medleyArray.push(sound);
+      this.setState({ medley: medleyArray });
       sound.play();
       await timer(500);
     }
