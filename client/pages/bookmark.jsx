@@ -77,13 +77,8 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
-    const medleyArray = [];
-    for (let i = 0; i < this.state.sounds.length; i++) {
-      const sound = new Audio();
-      sound.src = this.state.sounds[i].fileUrl;
-      medleyArray.push(sound);
-      this.setState({ medley: medleyArray });
-      sound.play();
+    for (let i = 0; i < this.state.medley.length; i++) {
+      this.state.medley[i].play();
       await timer(500);
     }
   }
