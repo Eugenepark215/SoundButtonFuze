@@ -49,8 +49,8 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
-    if (this.state.medley.length !== 0) {
-      for (let i = 0; i < this.state.sounds.length; i++) {
+    if (this.state.medley) {
+      for (let i = 0; i < this.state.medley.length; i++) {
         this.state.medley[i].pause();
       }
     }
@@ -78,6 +78,9 @@ export default class Bookmark extends React.Component {
       this.state.current.pause();
     }
     for (let i = 0; i < this.state.medley.length; i++) {
+      if (this.state.current) {
+        break;
+      }
       this.state.medley[i].play();
       await timer(500);
     }
