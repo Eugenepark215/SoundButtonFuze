@@ -69,11 +69,9 @@ export default class Bookmark extends React.Component {
       }
     }
     const { medley } = this.state;
-    if (medley) {
-      for (let i = 0; i < medley.length; i++) {
-        medley[i].pause();
-        medley[i].currentTime = 0;
-      }
+    for (let i = 0; i < medley.length; i++) {
+      medley[i].pause();
+      medley[i].currentTime = 0;
     }
   }
 
@@ -86,6 +84,14 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
+    if (this.state.medleyPlaying === 'playing') {
+      const { medley } = this.state;
+      for (let i = 0; i < medley.length; i++) {
+        medley[i].pause();
+        medley[i].currentTime = 0;
+        this.setState({ medleyPlaying: false });
+      }
+    }
     if (this.state.medleyPlaying === 'ready') {
       this.setState({ medleyPlaying: 'playing' });
       for (let i = 0; i < this.state.medley.length; i++) {
@@ -97,7 +103,7 @@ export default class Bookmark extends React.Component {
         await timer(500);
       }
     }
-    this.setState({ medleyPlaying: 'ready' });
+    // this.setState({ medleyPlaying: 'ready' });
   }
 
   render() {
