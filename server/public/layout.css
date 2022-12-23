@@ -62,12 +62,18 @@
 
 .add-to-bookmarks,
 .return-to-home,
-.remove-from-bookmarks,
-.play-medley {
+.remove-from-bookmarks {
   font-size: larger;
   width: 200px;
   height: 50px;
   margin-top: 3rem;
+}
+
+.play-medley {
+  font-size: larger;
+  width: 200px;
+  height: 50px;
+  margin-top: 2rem;
 }
 
 .button-column {
@@ -90,7 +96,7 @@
 }
 
 .button-container {
-  margin-bottom: 5rem;
+  margin-bottom: 1rem;
 }
 
 @media screen and (min-width: 750px) {
@@ -129,19 +135,23 @@
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks,
-  .sign-out,
-  .play-medley {
+  .remove-from-bookmarks {
     margin-top: 5rem;
     width: 200px;
     height: 40px;
     font-size: large;
   }
 
+  .play-medley {
+    width: 200px;
+    height: 40px;
+    font-size: large;
+    margin-bottom: 3rem;
+  }
+
   .button-container {
     margin-left: 8rem;
     margin-right: 8rem;
-    margin-bottom: 8rem;
   }
 }
 
@@ -157,7 +167,6 @@
   .button-container {
     margin-left: 15rem;
     margin-right: 15rem;
-    margin-bottom: 15rem;
   }
 
   .single-button {
@@ -173,8 +182,7 @@
 
   .add-to-bookmarks,
   .return-to-home,
-  .remove-from-bookmarks,
-  .sign-out {
+  .remove-from-bookmarks {
     width: 250px;
   }
 }

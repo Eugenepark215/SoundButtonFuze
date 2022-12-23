@@ -11,8 +11,11 @@ export default class Bookmark extends React.Component {
       sounds: [],
       error: false,
       loading: true,
+      current: null,
       home: false,
-      signOut: null
+      medley: [],
+      medleyPlaying: 'ready',
+      medleyPlay: null
     };
   }
 
@@ -32,7 +35,13 @@ export default class Bookmark extends React.Component {
         }
       })
       .then(sound => {
-        this.setState({ sounds: sound, loading: false });
+        const medleyArray = [];
+        for (let i = 0; i < sound.length; i++) {
+          const sounds = new Audio();
+          sounds.src = sound[i].fileUrl;
+          medleyArray.push(sounds);
+          this.setState({ sounds: sound, loading: false, medley: medleyArray });
+        }
       });
   }
 
@@ -41,6 +50,12 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
+    if (this.state.medleyPlaying) {
+      this.setState({ medleyPlaying: false });
+    }
+    if (!this.state.medleyPlaying) {
+      this.setState({ medleyPlaying: 'ready' });
+    }
     for (let i = 0; i < this.state.sounds.length; i++) {
       if (parseInt(event.target.id) === i) {
         sound.src = this.state.sounds[i].fileUrl;
@@ -48,27 +63,57 @@ export default class Bookmark extends React.Component {
         this.setState({ current: sound });
       }
     }
+    const { medley } = this.state;
+    for (let i = 0; i < medley.length; i++) {
+      medley[i].pause();
+      medley[i].currentTime = 0;
+    }
   }
 
   returnToHome(event) {
     this.setState({ home: true });
   }
 
-  signOut(event) {
-    window.localStorage.removeItem('react-context-jwt');
-    this.setState({ signOut: true });
-  }
-
-  async playMedley(event) {
+  async playMedley(event, prevState) {
     const timer = millisecond => new Promise(resolve => setTimeout(resolve, millisecond));
     if (this.state.current) {
       this.state.current.pause();
     }
-    for (let i = 0; i < this.state.sounds.length; i++) {
-      const sound = new Audio();
-      sound.src = this.state.sounds[i].fileUrl;
-      sound.play();
-      await timer(500);
+    const { medley } = this.state;
+    for (let i = 0; i < medley.length; i++) {
+      medley[i].pause();
+      medley[i].currentTime = 0;
+    }
+    if (this.state.medleyPlay === 'playing') {
+      const { medley } = this.state;
+      for (let i = 0; i < medley.length; i++) {
+        medley[i].pause();
+        medley[i].currentTime = 0;
+        this.setState({ medleyPlaying: false });
+      }
+    }
+    if (this.state.medleyPlaying === 'ready') {
+      this.setState({ medleyPlay: 'playing' });
+      for (let i = 0; i < this.state.medley.length; i++) {
+        if (!this.state.medleyPlaying) {
+          this.setState({ medleyPlaying: 'ready' });
+          break;
+        }
+        this.state.medley[i].play();
+        await timer(500);
+      }
+      this.setState({ medleyPlay: false });
+    } else if (!this.state.medleyPlaying) {
+      this.setState({ medleyPlay: 'playing' });
+      for (let i = 0; i < this.state.medley.length; i++) {
+        if (this.state.medleyPlaying) {
+          this.setState({ medleyPlaying: 'ready' });
+          break;
+        }
+        this.state.medley[i].play();
+        await timer(500);
+      }
+      this.setState({ medleyPlay: false });
     }
   }
 
@@ -123,9 +168,9 @@ export default class Bookmark extends React.Component {
             );
           })}
         </div>
-        <div className='display-flex align-center justify-content-center'>
+        {this.state.sounds.length !== 0 && <div className='display-flex align-center justify-content-center'>
           <button onClick={event => this.playMedley(event)} className='play-medley drop-shadow border-radius-5px white lucida-sans cyan-background border-none'>Play Medley</button>
-        </div>
+        </div>}
         {this.state.sounds.length === 0 && <div className='bookmark-text-holder display-flex justify-content-center lucida-sans'>
           <div>
             <h1 className='font-gray text-align-center'>No sounds bookmarked!</h1>
