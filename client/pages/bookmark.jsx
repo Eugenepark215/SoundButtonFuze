@@ -48,18 +48,12 @@ export default class Bookmark extends React.Component {
     const sound = new Audio();
     if (this.state.current) {
       this.state.current.pause();
-      this.setState({ medleyPlaying: 'ready' });
     }
-    if (!this.state.current && this.state.medleyPlaying === 'playing') {
+    if (this.state.medleyPlaying) {
       this.setState({ medleyPlaying: false });
-    } else if (!this.state.current && this.state.medleyPlaying === 'ready') {
-      this.setState({ medleyPlaying: 'ready' });
     }
-    if (this.state.current && !this.state.medleyPlaying) {
+    if (!this.state.medleyPlaying) {
       this.setState({ medleyPlaying: 'ready' });
-    }
-    if (this.state.current && this.state.medleyPlaying === 'playing') {
-      this.setState({ medleyPlaying: false });
     }
     for (let i = 0; i < this.state.sounds.length; i++) {
       if (parseInt(event.target.id) === i) {
@@ -84,16 +78,12 @@ export default class Bookmark extends React.Component {
     if (this.state.current) {
       this.state.current.pause();
     }
-    if (this.state.medleyPlaying === 'playing') {
-      const { medley } = this.state;
-      for (let i = 0; i < medley.length; i++) {
-        medley[i].pause();
-        medley[i].currentTime = 0;
-        this.setState({ medleyPlaying: false });
-      }
+    const { medley } = this.state;
+    for (let i = 0; i < medley.length; i++) {
+      medley[i].pause();
+      medley[i].currentTime = 0;
     }
-    if (this.state.medleyPlaying === 'ready') {
-      this.setState({ medleyPlaying: 'playing' });
+    if (this.state.medleyPlaying) {
       for (let i = 0; i < this.state.medley.length; i++) {
         if (!this.state.medleyPlaying) {
           this.setState({ medleyPlaying: 'ready' });
@@ -102,8 +92,16 @@ export default class Bookmark extends React.Component {
         this.state.medley[i].play();
         await timer(500);
       }
+    } else if (!this.state.medleyPlaying) {
+      for (let i = 0; i < this.state.medley.length; i++) {
+        if (this.state.medleyPlaying) {
+          this.setState({ medleyPlaying: 'ready' });
+          break;
+        }
+        this.state.medley[i].play();
+        await timer(500);
+      }
     }
-    // this.setState({ medleyPlaying: 'ready' });
   }
 
   render() {
